@@ -1,129 +1,194 @@
 import { NavLink, Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleSidebar } from '@store/slices/uiSlice'
+import { 
+  LayoutDashboard, FileText, MessageSquare, Image, BookOpen, 
+  Users, Clock, Calendar, BarChart, Star, Mail, Layout, 
+  Shield, ChevronLeft, ChevronRight, LogOut, User, Settings,
+  Award, GraduationCap, Heart, Zap, CheckCircle
+} from 'lucide-react'
 
 const NAV_ITEMS = [
-  { to: '/admin',              icon: 'grid',        label: 'Tableau de bord', exact: true },
+  { to: '/admin',              icon: LayoutDashboard, label: 'Tableau de bord', exact: true },
   { divider: 'Contenu' },
-  { to: '/admin/articles',     icon: 'file-text',   label: 'Articles & Blog' },
-  { to: '/admin/commentaires', icon: 'message-sq',  label: 'Commentaires' },
-  { to: '/admin/galeries',     icon: 'image',       label: 'Galeries' },
+  { to: '/admin/articles',     icon: FileText,        label: 'Articles & Blog' },
+  { to: '/admin/commentaires', icon: MessageSquare,   label: 'Commentaires' },
+  { to: '/admin/galeries',     icon: Image,           label: 'Galeries' },
   { divider: 'École' },
-  { to: '/admin/niveaux',      icon: 'book-open',   label: 'Niveaux scolaires' },
-  { to: '/admin/equipe',       icon: 'users',       label: 'Équipe pédagogique' },
-  { to: '/admin/horaires',     icon: 'clock',       label: 'Horaires' },
-  { to: '/admin/calendrier',   icon: 'calendar',    label: 'Calendrier' },
+  { to: '/admin/niveaux',      icon: BookOpen,        label: 'Niveaux scolaires' },
+  { to: '/admin/equipe',       icon: Users,           label: 'Équipe pédagogique' },
+  { to: '/admin/horaires',     icon: Clock,           label: 'Horaires' },
+  { to: '/admin/calendrier',   icon: Calendar,        label: 'Calendrier' },
   { divider: 'Accueil' },
-  { to: '/admin/chiffres-cles',icon: 'bar-chart',   label: 'Chiffres clés' },
-  { to: '/admin/temoignages',  icon: 'star',        label: 'Témoignages' },
+  { to: '/admin/chiffres-cles',icon: BarChart,        label: 'Chiffres clés' },
+  { to: '/admin/temoignages',  icon: Star,            label: 'Témoignages' },
   { divider: 'Communication' },
-  { to: '/admin/contacts',     icon: 'mail',        label: 'Messages reçus' },
-  { to: '/admin/pages',        icon: 'layout',      label: 'Pages statiques' },
+  { to: '/admin/contacts',     icon: Mail,            label: 'Messages reçus' },
+  { to: '/admin/pages',        icon: Layout,          label: 'Pages statiques' },
   { divider: 'Administration' },
-  { to: '/admin/utilisateurs', icon: 'shield',      label: 'Utilisateurs', roles: ['super_admin'] },
+  { to: '/admin/utilisateurs', icon: Shield,          label: 'Utilisateurs', roles: ['super_admin'] },
 ]
 
-const ICONS = {
-  'grid':      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />,
-  'file-text': <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></>,
-  'message-sq':<><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></>,
-  'image':     <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></>,
-  'book-open': <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></>,
-  'users':     <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></>,
-  'clock':     <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></>,
-  'calendar':  <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></>,
-  'bar-chart': <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></>,
-  'star':      <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></>,
-  'mail':      <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></>,
-  'layout':    <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm0 8a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zm12 0a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" /></>,
-  'shield':    <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></>,
-}
-
-function Icon({ name }) {
-  return (
-    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      {ICONS[name]}
-    </svg>
-  )
-}
+const SIDEBAR_STYLES = `
+  @keyframes sidebarGlow {
+    0%, 100% { box-shadow: 0 0 0 2px rgba(141,195,30,0.15); }
+    50% { box-shadow: 0 0 0 4px rgba(141,195,30,0.3); }
+  }
+  @keyframes sidebarFadeIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes pulseGreen {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.15); }
+  }
+  @keyframes floatY {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+  }
+  .nav-item-active {
+    background: linear-gradient(135deg, rgba(141,195,30,0.18) 0%, rgba(45,106,31,0.12) 100%);
+    border-left: 3px solid #8DC31E;
+  }
+  .nav-item-active svg {
+    color: #8DC31E !important;
+  }
+  .pulse-dot {
+    animation: pulseGreen 2s ease-in-out infinite;
+  }
+  .float-icon {
+    animation: floatY 3s ease-in-out infinite;
+  }
+`
 
 export default function AdminSidebar({ open }) {
   const { user } = useSelector((s) => s.auth)
+  const dispatch = useDispatch()
 
   return (
-    <aside className={`
-      flex-shrink-0 flex flex-col bg-primary transition-all duration-300 z-30
-      fixed lg:relative inset-y-0 left-0
-      ${open ? 'w-64 translate-x-0' : 'w-64 -translate-x-full lg:w-16 lg:translate-x-0'}
-    `}>
-      {/* Logo */}
-      <div className="h-16 flex items-center px-4 border-b border-white/10">
-        <Link to="/" className="flex items-center gap-3 overflow-hidden">
-          <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center shrink-0">
-            <span className="text-white font-display font-bold text-sm">M</span>
-          </div>
-          {open && (
-            <div className="overflow-hidden">
-              <p className="text-white font-display font-bold text-sm leading-tight whitespace-nowrap">EPV MAREL</p>
-              <p className="text-white/50 text-[10px] whitespace-nowrap">Back-office</p>
+    <>
+      <style>{SIDEBAR_STYLES}</style>
+      
+      <aside className={`
+        flex-shrink-0 flex flex-col transition-all duration-300 z-30
+        fixed lg:relative inset-y-0 left-0
+        bg-gradient-to-b from-[#0f2a07] via-[#1a4010] to-[#2D6A1F]
+        ${open ? 'w-64 translate-x-0' : 'w-64 -translate-x-full lg:w-[72px] lg:translate-x-0'}
+      `}>
+        {/* Logo avec effet glow */}
+        <div className="h-16 flex items-center px-4 border-b border-white/10">
+          <Link to="/" className="flex items-center gap-3 overflow-hidden group">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#8DC31E] to-[#2D6A1F] flex items-center justify-center shrink-0 shadow-lg transition-all duration-300 group-hover:shadow-[#8DC31E]/30 group-hover:shadow-xl">
+              <span className="text-white font-display font-bold text-sm">M</span>
             </div>
-          )}
-        </Link>
-      </div>
-
-      {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto py-4 px-2 space-y-0.5">
-        {NAV_ITEMS.map((item, i) => {
-          if (item.divider) {
-            if (!open) return null
-            return (
-              <p key={i} className="px-3 pt-5 pb-1 text-[10px] font-medium uppercase tracking-widest text-white/35">
-                {item.divider}
-              </p>
-            )
-          }
-          if (item.roles && !item.roles.includes(user?.role)) return null
-          return (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.exact}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group
-                ${isActive
-                  ? 'bg-white/15 text-white'
-                  : 'text-white/60 hover:bg-white/10 hover:text-white'}`
-              }
-              title={!open ? item.label : undefined}
-            >
-              {({ isActive }) => (
-                <>
-                  <span className={`shrink-0 ${isActive ? 'text-white' : 'text-white/60 group-hover:text-white'}`}>
-                    <Icon name={item.icon} />
-                  </span>
-                  {open && <span className="text-sm font-medium whitespace-nowrap">{item.label}</span>}
-                  {open && isActive && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-secondary" />}
-                </>
-              )}
-            </NavLink>
-          )
-        })}
-      </nav>
-
-      {/* User info */}
-      {open && user && (
-        <div className="p-3 border-t border-white/10">
-          <div className="flex items-center gap-3 px-3 py-2">
-            <div className="w-8 h-8 rounded-lg bg-secondary/30 flex items-center justify-center shrink-0">
-              <span className="text-secondary font-bold text-sm">{user.name?.charAt(0)?.toUpperCase()}</span>
-            </div>
-            <div className="overflow-hidden">
-              <p className="text-white text-sm font-medium truncate">{user.name}</p>
-              <p className="text-white/40 text-xs truncate capitalize">{user.role?.replace('_', ' ')}</p>
-            </div>
-          </div>
+            {open && (
+              <div className="overflow-hidden">
+                <p className="text-white font-display font-bold text-sm leading-tight whitespace-nowrap">EPV MAREL</p>
+                <p className="text-[#8DC31E]/60 text-[10px] whitespace-nowrap">Back-office</p>
+              </div>
+            )}
+          </Link>
         </div>
-      )}
-    </aside>
+
+        {/* Navigation */}
+        <nav className="flex-1 overflow-y-auto py-6 px-3 space-y-1">
+          {NAV_ITEMS.map((item, i) => {
+            if (item.divider) {
+              if (!open) return (
+                <div key={i} className="my-3 flex justify-center">
+                  <div className="w-8 h-px bg-white/10"></div>
+                </div>
+              )
+              return (
+                <p key={i} className="px-2 pt-4 pb-1 text-[10px] font-semibold uppercase tracking-wider text-[#8DC31E]/40">
+                  {item.divider}
+                </p>
+              )
+            }
+            if (item.roles && !item.roles.includes(user?.role)) return null
+            
+            const IconComponent = item.icon
+            
+            return (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.exact}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group relative
+                  ${isActive 
+                    ? 'nav-item-active text-white' 
+                    : 'text-white/50 hover:bg-white/5 hover:text-white'}`
+                }
+                title={!open ? item.label : undefined}
+              >
+                {({ isActive }) => (
+                  <>
+                    <span className={`shrink-0 transition-all duration-200 ${isActive ? 'text-[#8DC31E]' : 'text-white/40 group-hover:text-white/70'}`}>
+                      <IconComponent size={18} />
+                    </span>
+                    {open && (
+                      <>
+                        <span className="text-sm font-medium whitespace-nowrap">{item.label}</span>
+                        {isActive && (
+                          <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#8DC31E] pulse-dot" />
+                        )}
+                      </>
+                    )}
+                    {!open && isActive && (
+                      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 rounded-r-full bg-[#8DC31E]" />
+                    )}
+                  </>
+                )}
+              </NavLink>
+            )
+          })}
+        </nav>
+
+        {/* Badge d'information (inspiré du badge flottant hero) */}
+        {open && (
+          <div className="mx-3 mb-3 p-3 rounded-xl bg-white/5 border border-[#8DC31E]/20 backdrop-blur-sm">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-6 h-6 rounded-lg bg-[#8DC31E]/20 flex items-center justify-center">
+                <Award size={12} className="text-[#8DC31E]" />
+              </div>
+              <span className="text-[10px] font-semibold text-[#8DC31E] uppercase tracking-wider">Statut</span>
+            </div>
+            <p className="text-white/70 text-xs leading-relaxed">
+              Version <span className="text-[#8DC31E]">2.0</span>
+            </p>
+            <p className="text-white/40 text-[10px] mt-1">Dernière mise à jour • Mars 2026</p>
+          </div>
+        )}
+
+        {/* User info - version améliorée */}
+        {user && (
+          <div className={`${open ? 'p-3 m-2 rounded-xl bg-white/5 border border-white/10' : 'p-2'}`}>
+            <div className={`flex items-center gap-3 ${!open && 'justify-center'}`}>
+              <div className="relative">
+                <div className={`w-8 h-8 rounded-xl bg-gradient-to-br from-[#8DC31E] to-[#2D6A1F] flex items-center justify-center shrink-0 shadow-lg ${!open && 'w-9 h-9'}`}>
+                  <span className="text-white font-bold text-sm">{user.name?.charAt(0)?.toUpperCase()}</span>
+                </div>
+                <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-green-500 border-2 border-[#2D6A1F] pulse-dot" />
+              </div>
+              {open && (
+                <div className="overflow-hidden flex-1">
+                  <p className="text-white text-sm font-medium truncate">{user.name}</p>
+                  <p className="text-[#8DC31E]/60 text-xs truncate capitalize">{user.role?.replace('_', ' ')}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Bouton toggle pour mobile */}
+        <button
+          onClick={() => dispatch(toggleSidebar())}
+          className="lg:hidden absolute -right-10 top-4 w-8 h-8 rounded-full bg-[#2D6A1F] border border-[#8DC31E]/30 flex items-center justify-center shadow-lg"
+        >
+          {open ? <ChevronLeft size={16} className="text-white" /> : <ChevronRight size={16} className="text-white" />}
+        </button>
+      </aside>
+    </>
   )
 }
