@@ -6,21 +6,43 @@ import Modal from '@components/common/Modal'
 import toast from 'react-hot-toast'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
+import {
+  FileText, Plus, Search, Filter, Eye, Edit2, Trash2,
+  EyeOff, CheckCircle, Clock, Archive, Calendar, User,
+  Tag, ChevronLeft, ChevronRight, AlertCircle
+} from 'lucide-react'
 
 const STATUT_STYLES = {
-  publie:   'bg-green-100 text-green-700',
-  brouillon:'bg-gray-100 text-gray-600',
-  archive:  'bg-orange-100 text-orange-700',
+  publie:   { icon: CheckCircle, bg: 'bg-green-50', text: 'text-green-700', label: 'Publié' },
+  brouillon: { icon: Clock, bg: 'bg-gray-50', text: 'text-gray-600', label: 'Brouillon' },
+  archive:  { icon: Archive, bg: 'bg-orange-50', text: 'text-orange-700', label: 'Archivé' },
 }
 
+const ARTICLES_STYLES = `
+  @keyframes articlesFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes tableRowHover {
+    0% { background-color: transparent; }
+    100% { background-color: #F9FAFB; }
+  }
+  .articles-container {
+    animation: articlesFadeIn 0.4s ease-out;
+  }
+  .table-row-hover:hover {
+    animation: tableRowHover 0.2s ease forwards;
+  }
+`
+
 export default function ArticlesAdminPage() {
-  const [articles,  setArticles]  = useState([])
-  const [loading,   setLoading]   = useState(true)
-  const [pagination,setPagination]= useState(null)
-  const [page,      setPage]      = useState(1)
-  const [search,    setSearch]    = useState('')
-  const [statut,    setStatut]    = useState('')
-  const [deleteModal,setDeleteModal]= useState(null)
+  const [articles, setArticles] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [pagination, setPagination] = useState(null)
+  const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
+  const [statut, setStatut] = useState('')
+  const [deleteModal, setDeleteModal] = useState(null)
 
   const load = async () => {
     setLoading(true)
@@ -40,7 +62,7 @@ export default function ArticlesAdminPage() {
     const next = article.statut === 'publie' ? 'brouillon' : 'publie'
     try {
       await adminService.toggleStatutArticle(article.id, { statut: next })
-      toast.success(`Article ${next === 'publie' ? 'publié' : 'dépublié'}`)
+      toast.success(`Article ${next === 'publie' ? 'publié' : 'dépublié'} avec succès`)
       load()
     } catch (_) { toast.error('Erreur lors du changement de statut') }
   }
@@ -49,153 +71,254 @@ export default function ArticlesAdminPage() {
     if (!deleteModal) return
     try {
       await adminService.deleteArticle(deleteModal.id)
-      toast.success('Article supprimé')
+      toast.success('Article supprimé définitivement')
       setDeleteModal(null)
       load()
     } catch (_) { toast.error('Erreur lors de la suppression') }
   }
 
   return (
-    <div className="space-y-5">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="font-display font-bold text-2xl text-gray-900">Articles & Blog</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{pagination?.total || 0} article(s) au total</p>
-        </div>
-        <Link to="/admin/articles/nouveau" className="btn-primary shrink-0">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-          Nouvel article
-        </Link>
-      </div>
-
-      {/* Filtres */}
-      <div className="card p-4 flex flex-col sm:flex-row gap-3">
-        <form onSubmit={handleSearch} className="flex gap-2 flex-1">
-          <input value={search} onChange={e => setSearch(e.target.value)}
-            placeholder="Rechercher…" className="input-field flex-1 py-2.5" />
-          <button type="submit" className="btn-primary px-4 py-2.5 text-sm">Rechercher</button>
-        </form>
-        <select value={statut} onChange={e => { setStatut(e.target.value); setPage(1) }}
-          className="input-field w-auto py-2.5 text-sm">
-          <option value="">Tous les statuts</option>
-          <option value="publie">Publiés</option>
-          <option value="brouillon">Brouillons</option>
-          <option value="archive">Archivés</option>
-        </select>
-      </div>
-
-      {/* Table */}
-      <div className="card overflow-hidden">
-        {loading ? (
-          <div className="flex justify-center py-16"><LoadingSpinner size="lg" /></div>
-        ) : articles.length === 0 ? (
-          <div className="text-center py-16">
-            <p className="text-4xl mb-3">📰</p>
-            <p className="text-gray-400">Aucun article trouvé</p>
-            <Link to="/admin/articles/nouveau" className="btn-primary mt-4 inline-flex">Créer un article</Link>
+    <>
+      <style>{ARTICLES_STYLES}</style>
+      
+      <div className="articles-container space-y-5">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <FileText size={20} className="text-[#2D6A1F]" />
+              <h1 className="font-display font-bold text-2xl text-gray-900">Articles & Blog</h1>
+            </div>
+            <p className="text-sm text-gray-500">
+              {pagination?.total || 0} article{pagination?.total !== 1 ? 's' : ''} au total
+            </p>
           </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-gray-50 border-b border-gray-100">
-                  {['Titre', 'Catégorie', 'Statut', 'Vues', 'Date', 'Actions'].map(h => (
-                    <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50">
-                {articles.map((article) => (
-                  <tr key={article.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-4 py-3">
-                      <p className="font-medium text-gray-900 text-sm line-clamp-1 max-w-xs">{article.titre}</p>
-                      {article.auteur && <p className="text-xs text-gray-400 mt-0.5">{article.auteur?.name}</p>}
-                    </td>
-                    <td className="px-4 py-3">
-                      {article.categorie ? (
-                        <span className="px-2 py-0.5 rounded-lg text-xs font-medium text-white"
-                          style={{ backgroundColor: article.categorie.couleur }}>
-                          {article.categorie.nom}
-                        </span>
-                      ) : <span className="text-gray-300 text-xs">—</span>}
-                    </td>
-                    <td className="px-4 py-3">
-                      <span className={`px-2.5 py-1 rounded-lg text-xs font-medium capitalize ${STATUT_STYLES[article.statut]}`}>
-                        {article.statut}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-sm text-gray-500">{article.vues}</td>
-                    <td className="px-4 py-3 text-xs text-gray-400">
-                      {article.date_publication
-                        ? format(new Date(article.date_publication), 'd MMM yyyy', { locale: fr })
-                        : '—'}
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-1">
-                        <button onClick={() => handleToggleStatut(article)}
-                          className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors text-gray-400 hover:text-green-600"
-                          title={article.statut === 'publie' ? 'Dépublier' : 'Publier'}>
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                              d={article.statut === 'publie'
-                                ? 'M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21'
-                                : 'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'} />
-                          </svg>
-                        </button>
-                        <Link to={`/admin/articles/${article.id}/modifier`}
-                          className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors text-gray-400 hover:text-primary">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                          </svg>
-                        </Link>
-                        <button onClick={() => setDeleteModal(article)}
-                          className="p-1.5 rounded-lg hover:bg-red-50 transition-colors text-gray-400 hover:text-red-500">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-                        </button>
-                      </div>
-                    </td>
+          <Link to="/admin/articles/nouveau" className="btn-primary shrink-0 gap-2">
+            <Plus size={16} />
+            Nouvel article
+          </Link>
+        </div>
+
+        {/* Filtres */}
+        <div className="bg-white rounded-xl border border-gray-100 p-4 flex flex-col sm:flex-row gap-3 shadow-sm">
+          <form onSubmit={handleSearch} className="flex gap-2 flex-1">
+            <div className="relative flex-1">
+              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Rechercher un article..."
+                className="input-field pl-9 py-2.5"
+              />
+            </div>
+            <button type="submit" className="btn-primary px-5 py-2.5 text-sm">
+              Rechercher
+            </button>
+          </form>
+          <div className="relative">
+            <Filter size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <select
+              value={statut}
+              onChange={e => { setStatut(e.target.value); setPage(1) }}
+              className="input-field pl-9 py-2.5 text-sm appearance-none pr-8 min-w-[140px]"
+            >
+              <option value="">Tous les statuts</option>
+              <option value="publie">Publiés</option>
+              <option value="brouillon">Brouillons</option>
+              <option value="archive">Archivés</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Table */}
+        <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm">
+          {loading ? (
+            <div className="flex justify-center py-20">
+              <LoadingSpinner size="lg" />
+            </div>
+          ) : articles.length === 0 ? (
+            <div className="text-center py-20">
+              <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
+                <FileText size={28} className="text-gray-300" />
+              </div>
+              <p className="text-gray-400 font-medium">Aucun article trouvé</p>
+              <p className="text-sm text-gray-400 mt-1">Commencez par créer votre premier article</p>
+              <Link to="/admin/articles/nouveau" className="btn-primary mt-6 inline-flex gap-2">
+                <Plus size={16} />
+                Créer un article
+              </Link>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
+                    {['Titre', 'Catégorie', 'Statut', 'Vues', 'Date', 'Actions'].map(h => (
+                      <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        {h}
+                      </th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-50">
+                  {articles.map((article) => {
+                    const statusConfig = STATUT_STYLES[article.statut] || STATUT_STYLES.brouillon
+                    const StatusIcon = statusConfig.icon
+                    
+                    return (
+                      <tr key={article.id} className="table-row-hover transition-colors">
+                        <td className="px-4 py-3">
+                          <p className="font-semibold text-gray-900 text-sm line-clamp-1 max-w-xs">
+                            {article.titre}
+                          </p>
+                          {article.auteur && (
+                            <div className="flex items-center gap-1 mt-1">
+                              <User size={10} className="text-gray-400" />
+                              <p className="text-xs text-gray-400">{article.auteur?.name}</p>
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-4 py-3">
+                          {article.categorie ? (
+                            <span
+                              className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium text-white"
+                              style={{ backgroundColor: article.categorie.couleur || '#2D6A1F' }}
+                            >
+                              <Tag size={10} />
+                              {article.categorie.nom}
+                            </span>
+                          ) : (
+                            <span className="text-gray-300 text-xs">—</span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium ${statusConfig.bg} ${statusConfig.text}`}>
+                            <StatusIcon size={10} />
+                            {statusConfig.label}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-1 text-sm text-gray-500">
+                            <Eye size={12} />
+                            {article.vues || 0}
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-1 text-xs text-gray-400">
+                            <Calendar size={10} />
+                            {article.date_publication
+                              ? format(new Date(article.date_publication), 'd MMM yyyy', { locale: fr })
+                              : 'Non publié'}
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => handleToggleStatut(article)}
+                              className="p-1.5 rounded-lg hover:bg-gray-100 transition-all text-gray-400 hover:text-[#8DC31E]"
+                              title={article.statut === 'publie' ? 'Dépublier' : 'Publier'}
+                            >
+                              {article.statut === 'publie' ? <EyeOff size={15} /> : <Eye size={15} />}
+                            </button>
+                            <Link
+                              to={`/admin/articles/${article.id}/modifier`}
+                              className="p-1.5 rounded-lg hover:bg-gray-100 transition-all text-gray-400 hover:text-[#2D6A1F]"
+                              title="Modifier"
+                            >
+                              <Edit2 size={15} />
+                            </Link>
+                            <button
+                              onClick={() => setDeleteModal(article)}
+                              className="p-1.5 rounded-lg hover:bg-red-50 transition-all text-gray-400 hover:text-red-500"
+                              title="Supprimer"
+                            >
+                              <Trash2 size={15} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
+        {/* Pagination */}
+        {pagination && pagination.last_page > 1 && (
+          <div className="flex justify-center gap-2">
+            <button
+              onClick={() => setPage(p => Math.max(1, p - 1))}
+              disabled={page === 1}
+              className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all
+                ${page === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-100'}`}
+            >
+              <ChevronLeft size={16} />
+            </button>
+            {Array.from({ length: Math.min(5, pagination.last_page) }, (_, i) => {
+              let pNum
+              if (pagination.last_page <= 5) pNum = i + 1
+              else if (page <= 3) pNum = i + 1
+              else if (page >= pagination.last_page - 2) pNum = pagination.last_page - 4 + i
+              else pNum = page - 2 + i
+              
+              return (
+                <button
+                  key={pNum}
+                  onClick={() => setPage(pNum)}
+                  className={`w-9 h-9 rounded-lg text-sm font-medium transition-all
+                    ${pNum === page
+                      ? 'bg-gradient-to-r from-[#2D6A1F] to-[#1a4010] text-white shadow-md'
+                      : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'}`}
+                >
+                  {pNum}
+                </button>
+              )
+            })}
+            <button
+              onClick={() => setPage(p => Math.min(pagination.last_page, p + 1))}
+              disabled={page === pagination.last_page}
+              className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all
+                ${page === pagination.last_page ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-100'}`}
+            >
+              <ChevronRight size={16} />
+            </button>
           </div>
         )}
+
+        {/* Modal suppression */}
+        <Modal open={!!deleteModal} onClose={() => setDeleteModal(null)} title="Supprimer l'article" size="sm">
+          <div className="text-center">
+            <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4">
+              <AlertCircle size={22} className="text-red-500" />
+            </div>
+            <p className="text-gray-700 mb-2">
+              Êtes-vous sûr de vouloir supprimer
+            </p>
+            <p className="font-semibold text-gray-900 mb-4">
+              "{deleteModal?.titre}" ?
+            </p>
+            <p className="text-xs text-gray-400 mb-6">
+              Cette action est irréversible.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setDeleteModal(null)}
+                className="flex-1 py-2.5 px-4 rounded-xl border border-gray-200 text-gray-600 font-medium hover:bg-gray-50 transition-all"
+              >
+                Annuler
+              </button>
+              <button
+                onClick={handleDelete}
+                className="flex-1 py-2.5 px-4 rounded-xl bg-red-500 text-white font-medium hover:bg-red-600 transition-all"
+              >
+                Supprimer
+              </button>
+            </div>
+          </div>
+        </Modal>
       </div>
-
-      {/* Pagination */}
-      {pagination && pagination.last_page > 1 && (
-        <div className="flex justify-center gap-2">
-          {Array.from({ length: pagination.last_page }, (_, i) => i + 1).map(p => (
-            <button key={p} onClick={() => setPage(p)}
-              className={`w-9 h-9 rounded-lg text-sm font-medium transition-all ${
-                p === page ? 'bg-primary text-white' : 'bg-white text-gray-600 hover:bg-gray-100 shadow-sm'
-              }`}>{p}</button>
-          ))}
-        </div>
-      )}
-
-      {/* Modal suppression */}
-      <Modal open={!!deleteModal} onClose={() => setDeleteModal(null)} title="Supprimer l'article" size="sm">
-        <p className="text-gray-600 mb-6">
-          Êtes-vous sûr de vouloir supprimer <strong>"{deleteModal?.titre}"</strong> ?
-          Cette action est irréversible.
-        </p>
-        <div className="flex gap-3">
-          <button onClick={() => setDeleteModal(null)} className="btn-ghost flex-1 justify-center border border-gray-200">
-            Annuler
-          </button>
-          <button onClick={handleDelete} className="flex-1 py-2.5 px-4 rounded-xl bg-red-500 text-white font-medium hover:bg-red-600 transition-colors">
-            Supprimer
-          </button>
-        </div>
-      </Modal>
-    </div>
+    </>
   )
 }
