@@ -87,7 +87,7 @@ function GalerieHero() {
             </h1>
 
             <p style={{ ...fadeUp(580), color: 'rgba(255,255,255,0.75)', fontSize: '17px', maxWidth: '500px', lineHeight: 1.8, marginBottom: '40px' }}>
-              Sorties scolaires, cérémonies, activités culturelles et résultats — revivez les souvenirs d'ETS MAREL à travers nos albums photos.
+              Sorties scolaires, cérémonies, activités culturelles et résultats — revivez les souvenirs d'EPV MAREL à travers nos albums photos.
             </p>
 
             {/* CTA */}
@@ -393,7 +393,7 @@ export default function GaleriePage() {
   return (
     <>
       <Helmet>
-        <title>Galerie Photos — ETS MAREL | Abidjan</title>
+        <title>Galerie Photos — EPV MAREL | Abidjan</title>
         <meta name="description" content="Galerie photos et vidéos d'ETS MAREL : sorties scolaires, cérémonies, activités et résultats. Revivez les moments forts de la vie scolaire." />
       </Helmet>
 

@@ -673,7 +673,7 @@ export function PedagogiePage() {
   return (
     <>
       <Helmet>
-        <title>Pédagogie — ETS MAREL | Abidjan</title>
+        <title>Pédagogie — EPV MAREL | Abidjan</title>
         <meta name="description" content="Découvrez l'offre pédagogique d'ETS MAREL : tranches d'âge, cours obligatoires (informatique, anglais, activités culturelles), prestations facultatives." />
       </Helmet>
 

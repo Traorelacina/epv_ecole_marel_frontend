@@ -83,7 +83,7 @@ function ActualitesHero() {
             </h1>
 
             <p style={{ ...fadeUp(580), color: 'rgba(255,255,255,0.75)', fontSize: '17px', maxWidth: '500px', lineHeight: 1.8, marginBottom: '40px' }}>
-              Sorties scolaires, résultats, événements et annonces importantes de l'ETS MAREL.
+              Sorties scolaires, résultats, événements et annonces importantes de l'EPV MAREL.
               Restez connectés avec la vie de notre école.
             </p>
 
@@ -337,7 +337,7 @@ export function ActualitesPage() {
   return (
     <>
       <Helmet>
-        <title>Actualités — ETS MAREL | Abidjan</title>
+        <title>Actualités — EPV MAREL | Abidjan</title>
         <meta name="description" content="Suivez les dernières actualités, événements et résultats de l'ETS MAREL à Abidjan." />
       </Helmet>
 

@@ -149,7 +149,7 @@ export function ChiffresSection({ chiffres = [] }) {
         <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
           <div className="badge-red" style={{ marginBottom: '1rem' }}>En chiffres</div>
           <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 'clamp(1.8rem,3vw,2.5rem)', fontWeight: 700, color: '#FFFFFF' }}>
-            ETS MAREL en quelques <span style={{ color: '#9ED63A' }}>chiffres clés</span>
+            EPV MAREL en quelques <span style={{ color: '#9ED63A' }}>chiffres clés</span>
           </h2>
         </div>
 
@@ -392,7 +392,7 @@ export function CTASection() {
               Offrez le meilleur à votre enfant
             </h2>
             <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '1.05rem', marginBottom: '2rem', lineHeight: 1.7 }}>
-              Rejoignez la famille ETS MAREL. Contactez-nous pour inscrire votre enfant dans notre établissement d'excellence.
+              Rejoignez la famille EPV MAREL. Contactez-nous pour inscrire votre enfant dans notre établissement d'excellence.
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
               <RouterLink to="/contact" className="btn-red" style={{ fontSize: '0.95rem', padding: '0.85rem 2rem' }}>

@@ -115,8 +115,8 @@ export default function EcolePage() {
   return (
     <>
       <Helmet>
-        <title>L'École — ETS MAREL | Une institution d'excellence à Abidjan</title>
-        <meta name="description" content="Découvrez l'histoire, les valeurs et l'équipe pédagogique de l'ETS MAREL à Abidjan Deux Plateaux. Une école d'excellence depuis 2000." />
+        <title>L'École — EPV MAREL | Une institution d'excellence à Abidjan</title>
+        <meta name="description" content="Découvrez l'histoire, les valeurs et l'équipe pédagogique de l'EPV MAREL à Abidjan Deux Plateaux. Une école d'excellence depuis 2000." />
       </Helmet>
 
       {/* Hero Section avec texte à gauche et image à droite */}
@@ -176,7 +176,7 @@ export default function EcolePage() {
                 opacity: loaded ? 1 : 0,
                 animation: loaded ? 'heroFadeUp .7s cubic-bezier(.22,.68,0,1.2) 200ms both' : 'none',
               }}>
-                ETS MAREL,
+                EPV MAREL,
               </h1>
               <h1 style={{
                 fontFamily: "'Sora',sans-serif", fontWeight: 800,
@@ -206,7 +206,7 @@ export default function EcolePage() {
                 opacity: loaded ? 1 : 0,
                 animation: loaded ? 'fadeBlur .8s ease 620ms both' : 'none',
               }}>
-                Fondée en 2000, ETS MAREL forme les enfants de la crèche au CM2 avec passion et rigueur,
+                Fondée en 2000, EPV MAREL forme les enfants de la crèche au CM2 avec passion et rigueur,
                 aux Deux Plateaux de Cocody Abidjan.
               </p>
 
@@ -403,7 +403,7 @@ export default function EcolePage() {
               <span className="underline-green" />
 
               <p style={{ color: '#6B7280', fontSize: '16px', lineHeight: 1.85, marginTop: '28px', marginBottom: '22px' }}>
-                L'ETS MAREL a été fondée en 2000 avec une mission claire : offrir aux enfants
+                L'EPV MAREL a été fondée en 2000 avec une mission claire : offrir aux enfants
                 d'Abidjan un cadre éducatif d'excellence alliant rigueur académique et épanouissement personnel.
               </p>
               <p style={{ color: '#6B7280', fontSize: '16px', lineHeight: 1.85, marginBottom: '32px' }}>

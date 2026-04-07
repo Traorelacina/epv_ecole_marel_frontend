@@ -38,52 +38,46 @@ export default function Navbar() {
         }}
       >
         <div className="wrap">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '72px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '80px' }}>
 
-            {/* ── Logo ── */}
-            <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{
-                width: '48px', height: '48px', borderRadius: '50%',
-                overflow: 'hidden', border: '2px solid #8DC31E',
-                flexShrink: 0,
-              }}>
-                <img
-                  src={logo}
-                  alt="Logo ETS MAREL"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-              </div>
-              <div>
-                <p style={{
-                  fontFamily: "'Sora', sans-serif",
-                  fontWeight: 800, fontSize: '17px',
-                  color: '#2D6A1F', lineHeight: 1.1, letterSpacing: '-0.3px',
-                }}>
-                  ETS. MAREL
-                </p>
-                <p style={{ fontSize: '10px', color: '#8DC31E', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-                  Maternelle &amp; Primaire
-                </p>
-              </div>
+            {/* ── Logo agrandi et épuré ── */}
+            <Link to="/" style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+              <img
+                src={logo}
+                alt="Logo EPV MAREL"
+                style={{
+                  width: '64px',
+                  height: '64px',
+                  objectFit: 'contain',
+                  display: 'block',
+                }}
+              />
             </Link>
 
-            {/* ── Nav Desktop ── */}
-            <nav style={{ alignItems: 'center', gap: '2px' }} className="lg:flex hidden">
+            {/* ── Nav Desktop avec polices agrandies ── */}
+            <nav style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '8px',
+              flexWrap: 'wrap',
+              justifyContent: 'flex-end',
+            }} className="lg:flex hidden">
               {LINKS.map((link) => (
                 <NavLink
                   key={link.to}
                   to={link.to}
                   end={link.to === '/'}
                   style={({ isActive }) => ({
-                    padding: '8px 14px',
+                    padding: '8px 18px',
                     borderRadius: '10px',
-                    fontSize: '13.5px',
+                    fontSize: '15px',
                     fontWeight: 600,
                     textDecoration: 'none',
                     transition: 'all 0.2s ease',
                     backgroundColor: isActive ? '#8DC31E' : 'transparent',
                     color: isActive ? '#ffffff' : '#374151',
                     letterSpacing: '-0.1px',
+                    whiteSpace: 'nowrap',
                   })}
                   onMouseEnter={e => {
                     if (e.currentTarget.getAttribute('aria-current') !== 'page') {
@@ -110,8 +104,8 @@ export default function Navbar() {
                 className="hidden md:flex"
                 style={{
                   backgroundColor: '#D4191A', color: '#fff',
-                  padding: '10px 20px', borderRadius: '10px',
-                  fontSize: '13px', fontWeight: 700,
+                  padding: '10px 24px', borderRadius: '10px',
+                  fontSize: '14px', fontWeight: 700,
                   boxShadow: '0 3px 12px rgba(212,25,26,0.28)',
                   transition: 'all 0.25s ease', letterSpacing: '0.01em',
                   whiteSpace: 'nowrap',
@@ -170,16 +164,16 @@ export default function Navbar() {
             transition: 'max-height 0.35s ease, opacity 0.25s ease',
           }}
         >
-          <div className="wrap" style={{ paddingTop: '16px', paddingBottom: '20px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          <div className="wrap" style={{ paddingTop: '16px', paddingBottom: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {LINKS.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
                 end={link.to === '/'}
                 style={({ isActive }) => ({
-                  padding: '12px 16px',
+                  padding: '14px 16px',
                   borderRadius: '10px',
-                  fontSize: '14px',
+                  fontSize: '16px',
                   fontWeight: 600,
                   color: isActive ? '#ffffff' : '#374151',
                   backgroundColor: isActive ? '#8DC31E' : 'transparent',
@@ -192,9 +186,9 @@ export default function Navbar() {
             <Link
               to="/contact"
               style={{
-                marginTop: '8px', padding: '13px 16px', borderRadius: '10px',
+                marginTop: '8px', padding: '14px 16px', borderRadius: '10px',
                 backgroundColor: '#D4191A', color: '#fff',
-                fontSize: '14px', fontWeight: 700, textAlign: 'center',
+                fontSize: '16px', fontWeight: 700, textAlign: 'center',
               }}
             >
               Nous contacter
@@ -205,7 +199,7 @@ export default function Navbar() {
       </header>
 
       {/* Spacer pour compenser le header fixe */}
-      <div style={{ height: '72px' }} />
+      <div style={{ height: '80px' }} />
     </>
   )
 }

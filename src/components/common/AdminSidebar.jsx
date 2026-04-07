@@ -145,22 +145,6 @@ export default function AdminSidebar({ open }) {
           })}
         </nav>
 
-        {/* Badge d'information (inspiré du badge flottant hero) */}
-        {open && (
-          <div className="mx-3 mb-3 p-3 rounded-xl bg-white/5 border border-[#8DC31E]/20 backdrop-blur-sm">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-6 h-6 rounded-lg bg-[#8DC31E]/20 flex items-center justify-center">
-                <Award size={12} className="text-[#8DC31E]" />
-              </div>
-              <span className="text-[10px] font-semibold text-[#8DC31E] uppercase tracking-wider">Statut</span>
-            </div>
-            <p className="text-white/70 text-xs leading-relaxed">
-              Version <span className="text-[#8DC31E]">2.0</span>
-            </p>
-            <p className="text-white/40 text-[10px] mt-1">Dernière mise à jour • Mars 2026</p>
-          </div>
-        )}
-
         {/* User info - version améliorée */}
         {user && (
           <div className={`${open ? 'p-3 m-2 rounded-xl bg-white/5 border border-white/10' : 'p-2'}`}>

@@ -155,7 +155,7 @@ function HeroSection() {
                 opacity: loaded ? 1 : 0,
                 animation: loaded ? 'fadeBlur .8s ease 620ms both' : 'none',
               }}>
-                ETS MAREL forme les enfants de la crèche au CM2 avec passion et rigueur,
+                EPV MAREL forme les enfants de la crèche au CM2 avec passion et rigueur,
                 à Deux Plateaux Abidjan.{' '}
                 <strong style={{ color: '#B5D95A' }}>100% de réussite au CEPE depuis 2012.</strong>
               </p>
@@ -408,7 +408,7 @@ function PresentationSection() {
             <h2 className="section-title" style={{ color: '#2D6A1F', marginBottom: '24px' }}>qualité à Abidjan</h2>
             <span className="underline-green" />
             <p style={{ color: '#6B7280', fontSize: '16px', lineHeight: 1.85, marginTop: '28px', marginBottom: '28px' }}>
-              Située aux Deux Plateaux 8ème Tranche à Cocody, ETS MAREL accueille les enfants
+              Située aux Deux Plateaux 8ème Tranche à Cocody, EPV MAREL accueille les enfants
               des 6 mois jusqu'au CM2. Notre approche pédagogique alliant rigueur et bienveillance
               garantit l'épanouissement de chaque élève.
             </p>
@@ -682,7 +682,7 @@ function CTASection() {
                 Offrez le meilleur à<br />votre enfant
               </h2>
               <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '15px', maxWidth: '440px' }}>
-                Rejoignez la famille ETS MAREL. Contactez-nous pour inscrire votre enfant et lui offrir un avenir brillant.
+                Rejoignez la famille EPV MAREL. Contactez-nous pour inscrire votre enfant et lui offrir un avenir brillant.
               </p>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
