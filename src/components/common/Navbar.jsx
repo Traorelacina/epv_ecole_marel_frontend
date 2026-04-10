@@ -10,7 +10,7 @@ const LINKS = [
   { to: '/informations-pratiques', label: "Infos pratiques" },
   { to: '/actualites',             label: "Actualites" },
   { to: '/galerie',                label: "Galerie" },
-  { to: '/contact',                label: "Contact" },
+
 ]
 
 export default function Navbar() {

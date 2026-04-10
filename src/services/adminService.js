@@ -33,15 +33,28 @@ export const adminService = {
   updateCategorie: (id, data)       => api.put(`/admin/categories/${id}`, data),
   deleteCategorie: (id)             => api.delete(`/admin/categories/${id}`),
 
-  // Galeries
-  getGaleries:     (params = {})    => api.get('/admin/galeries', { params }),
-  getGalerie:      (id)             => api.get(`/admin/galeries/${id}`),
-  createGalerie:   (data)           => api.post('/admin/galeries', data, { headers: { 'Content-Type': 'multipart/form-data' } }),
-  updateGalerie:   (id, data)       => api.post(`/admin/galeries/${id}`, data, { headers: { 'Content-Type': 'multipart/form-data' } }),
-  deleteGalerie:   (id)             => api.delete(`/admin/galeries/${id}`),
-  togglePublierGalerie: (id)        => api.post(`/admin/galeries/${id}/toggle-publier`),
-  uploadPhoto:     (id, data)       => api.post(`/admin/galeries/${id}/upload-photo`, data, { headers: { 'Content-Type': 'multipart/form-data' } }),
-  deleteMedia:     (id)             => api.delete(`/admin/medias/${id}`),
+
+// services/adminService.js
+
+    // Galeries
+    getGaleries: (params = {}) => api.get('/admin/galeries', { params }),
+    getGalerie: (id) => api.get(`/admin/galeries/${id}`),
+    createGalerie: (data) => api.post('/admin/galeries', data, { 
+        headers: { 'Content-Type': 'multipart/form-data' } 
+    }),
+    updateGalerie: (id, data) => api.post(`/admin/galeries/${id}`, data, { 
+        headers: { 'Content-Type': 'multipart/form-data' } 
+    }),
+    deleteGalerie: (id) => api.delete(`/admin/galeries/${id}`),
+    togglePublierGalerie: (id) => api.post(`/admin/galeries/${id}/toggle-publier`),
+    
+    // Photos - La route correcte est /galeries/{galerie}/medias/{media}
+    uploadPhoto: (id, data) => api.post(`/admin/galeries/${id}/upload-photo`, data, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    }),
+    deleteMedia: (galerieId, mediaId) => api.delete(`/admin/galeries/${galerieId}/medias/${mediaId}`),
+    reorderMedias: (galerieId, data) => api.post(`/admin/galeries/${galerieId}/reorder-medias`, data),
+
 
   // Contacts
   getContacts:     (params = {})    => api.get('/admin/contacts', { params }),
