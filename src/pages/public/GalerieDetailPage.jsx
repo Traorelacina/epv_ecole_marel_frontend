@@ -7,7 +7,7 @@ import { publicService } from '@services/publicService'
 import { useInView } from '@hooks/useInView'
 import { ChevronRight, Image, Play, ArrowLeft, ZoomIn, ArrowRight } from 'lucide-react'
 
-const STORAGE = import.meta.env.VITE_STORAGE_URL || 'http://localhost:8000/storage'
+const STORAGE = import.meta.env.VITE_STORAGE_URL || 'https://ideal-ilse-freelence-89b443a4.koyeb.app/'
 
 /* ── Spinner chargement ── */
 function Spinner() {

@@ -7,7 +7,7 @@ import { useInView } from '@hooks/useInView'
 import { useCounter } from '@hooks/useCounter'
 import ecoleImage from '../../assets/images/ecole_marel.jpeg'
 
-const STORAGE = import.meta.env.VITE_STORAGE_URL || 'http://localhost:8000/storage'
+const STORAGE = import.meta.env.VITE_STORAGE_URL || 'https://ideal-ilse-freelence-89b443a4.koyeb.app/'
 
 const VALEURS = [
   { icon: Award,   label: 'Excellence',    desc: '100% de réussite au CEPE depuis 2012. Un engagement constant envers la qualité.',    color: '#8DC31E' },

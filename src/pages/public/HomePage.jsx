@@ -9,7 +9,7 @@ import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import logo from '../../assets/images/image_marel.jpeg'
 
-const STORAGE = import.meta.env.VITE_STORAGE_URL || 'http://localhost:8000/storage'
+const STORAGE = import.meta.env.VITE_STORAGE_URL || 'https://ideal-ilse-freelence-89b443a4.koyeb.app/'
 
 /* ────────────────────────────────────────────────────────
    KEYFRAMES GLOBAUX (injectés une seule fois)

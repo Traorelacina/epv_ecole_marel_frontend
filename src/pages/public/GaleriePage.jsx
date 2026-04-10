@@ -6,7 +6,7 @@ import { useInView } from '@hooks/useInView'
 import { ChevronRight, Image, Filter, ArrowRight, Camera, Sparkles, Calendar, Heart } from 'lucide-react'
 import galerieImage from '../../assets/images/galerie_marel.jpeg'
 
-const STORAGE = import.meta.env.VITE_STORAGE_URL || 'http://localhost:8000/storage'
+const STORAGE = import.meta.env.VITE_STORAGE_URL || 'https://ideal-ilse-freelence-89b443a4.koyeb.app/'
 
 const CATEGORIES = [
   { val: '',           label: 'Tous' },

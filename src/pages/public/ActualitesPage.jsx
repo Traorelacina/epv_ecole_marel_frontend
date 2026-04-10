@@ -11,7 +11,7 @@ import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import actualitesImage from '../../assets/images/actualites_marel.jpeg'
 
-const STORAGE = import.meta.env.VITE_STORAGE_URL || 'http://localhost:8000/storage'
+const STORAGE = import.meta.env.VITE_STORAGE_URL || 'https://ideal-ilse-freelence-89b443a4.koyeb.app/'
 
 /* ── Hero avec image à droite ── */
 function ActualitesHero() {
