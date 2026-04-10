@@ -17,6 +17,12 @@ const NIVEAUX = ['Creche', 'Garderie', 'Petite Section', 'Moyenne Section', 'Gra
 export default function Footer() {
   const year = new Date().getFullYear()
 
+  // 🔧 Fonction pour remonter en haut au clic
+  const handleLinkClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' }) // scroll fluide
+    // Alternative sans animation : window.scrollTo(0, 0)
+  }
+
   return (
     <footer>
       {/* Bande supérieure verte */}
@@ -29,7 +35,11 @@ export default function Footer() {
 
             {/* Bloc école - Logo agrandi et épuré */}
             <div style={{ gridColumn: 'span 1' }}>
-              <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '24px' }}>
+              <Link 
+                to="/" 
+                onClick={handleLinkClick}  // ✅ Ajout du scroll
+                style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '24px' }}
+              >
                 <img
                   src={logo}
                   alt="Logo ETS MAREL"
@@ -65,6 +75,7 @@ export default function Footer() {
                   <li key={l.to}>
                     <Link
                       to={l.to}
+                      onClick={handleLinkClick}  // ✅ Ajout du scroll
                       style={{ color: '#9CA3AF', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px', transition: 'color 0.2s ease' }}
                       onMouseEnter={e => e.currentTarget.style.color = '#8DC31E'}
                       onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}
@@ -126,6 +137,7 @@ export default function Footer() {
                 <Link
                   key={l}
                   to="/contact"
+                  onClick={handleLinkClick}  // ✅ Ajout du scroll
                   style={{ color: '#6B7280', fontSize: '13px', transition: 'color 0.2s' }}
                   onMouseEnter={e => e.currentTarget.style.color = '#8DC31E'}
                   onMouseLeave={e => e.currentTarget.style.color = '#6B7280'}

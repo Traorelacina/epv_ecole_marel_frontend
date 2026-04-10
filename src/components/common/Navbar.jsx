@@ -10,7 +10,6 @@ const LINKS = [
   { to: '/informations-pratiques', label: "Infos pratiques" },
   { to: '/actualites',             label: "Actualites" },
   { to: '/galerie',                label: "Galerie" },
-
 ]
 
 export default function Navbar() {
@@ -24,7 +23,11 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', fn)
   }, [])
 
-  useEffect(() => setMobileOpen(false), [location])
+  // ⚡ SOLUTION : remonter automatiquement en haut de page à chaque changement de route
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    setMobileOpen(false)
+  }, [location])  // Déclenché à chaque fois que l'URL change
 
   return (
     <>
@@ -40,7 +43,7 @@ export default function Navbar() {
         <div className="wrap">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '80px' }}>
 
-            {/* ── Logo agrandi et épuré ── */}
+            {/* Logo */}
             <Link to="/" style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
               <img
                 src={logo}
@@ -54,7 +57,7 @@ export default function Navbar() {
               />
             </Link>
 
-            {/* ── Nav Desktop avec polices agrandies ── */}
+            {/* Nav Desktop */}
             <nav style={{ 
               display: 'flex', 
               alignItems: 'center', 
@@ -97,7 +100,7 @@ export default function Navbar() {
               ))}
             </nav>
 
-            {/* ── CTA + Burger ── */}
+            {/* CTA + Burger */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <Link
                 to="/contact"
@@ -152,7 +155,7 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* ── Menu Mobile ── */}
+        {/* Menu Mobile */}
         <div
           className="lg:hidden"
           style={{
@@ -198,7 +201,7 @@ export default function Navbar() {
 
       </header>
 
-      {/* Spacer pour compenser le header fixe */}
+      {/* Spacer */}
       <div style={{ height: '80px' }} />
     </>
   )
