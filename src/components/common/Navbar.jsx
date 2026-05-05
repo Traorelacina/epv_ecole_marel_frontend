@@ -109,21 +109,18 @@ const STYLES = `
   .drawer-link:hover { background: #F2F9E5; color: #2D6A1F; }
   .drawer-link.active { background: #8DC31E; color: #fff; }
 
-  /* ── Responsive ── */
-
   @media (max-width: 1100px) {
     .nav-link { font-size: 14px; padding: 9px 12px; }
     .navbar-inner { padding: 0 20px; }
   }
 
-  /* Tablette et mobile : la barre n'est plus fixe, elle défile */
+  /* Version mobile : la barre n'est plus fixe, elle défile */
   @media (max-width: 860px) {
     .navbar-desktop { display: none; }
     .navbar-burger { display: flex; }
     .navbar-drawer { display: block; }
     .navbar-inner { justify-content: flex-end; }
 
-    /* Désactive le fixed : la barre devient relative et suit le scroll */
     .navbar-root {
       position: relative !important;
       top: auto !important;
@@ -131,8 +128,10 @@ const STYLES = `
     }
   }
 
+  /* Mobile : hauteur compacte (bande blanche réduite) */
   @media (max-width: 480px) {
-    .navbar-inner { padding: 0 16px; height: 60px; }
+    .navbar-inner { padding: 0 16px; height: 48px; }
+    .navbar-burger { padding: 6px; }
     .drawer-link { font-size: 15px; padding: 12px 16px; }
   }
 `
@@ -178,7 +177,12 @@ export default function Navbar() {
     setMobileOpen(false)
   }, [location])
 
-  const navbarH = window.innerWidth <= 480 ? 60 : 72
+  // Hauteur de la navbar (utilisée pour le spacer desktop)
+  const navbarH = window.innerWidth <= 480 ? 48 : 72
+
+  const headerStyle = isDesktop
+    ? { top: `${topbarH}px` }
+    : { marginTop: `${topbarH}px` }
 
   return (
     <>
@@ -186,8 +190,7 @@ export default function Navbar() {
 
       <header
         className={`navbar-root${scrolled ? ' scrolled' : ''}`}
-        // Le top n'est appliqué que sur desktop (car sur mobile la position est relative)
-        style={isDesktop ? { top: `${topbarH}px` } : {}}
+        style={headerStyle}
       >
         <div className="navbar-inner">
           <nav className="navbar-desktop">
@@ -230,7 +233,6 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Espace réservé uniquement sur desktop (car seule la version desktop est fixe) */}
       {isDesktop && <div style={{ height: `${topbarH + navbarH}px` }} />}
     </>
   )
