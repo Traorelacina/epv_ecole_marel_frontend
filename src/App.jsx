@@ -1,38 +1,39 @@
-import { BrowserRouter, Routes, Route, ScrollRestoration } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
-import PublicLayout from '@components/layout/PublicLayout'
-import AdminLayout  from '@components/layout/AdminLayout'
+import PublicLayout  from '@components/layout/PublicLayout'
+import AdminLayout   from '@components/layout/AdminLayout'
 import ProtectedRoute from '@components/common/ProtectedRoute'
 
 // Pages publiques
-import HomePage        from '@pages/public/HomePage'
-import EcolePage       from '@pages/public/EcolePage'
-import PedagogiePage   from '@pages/public/PedagogiePage'
-import InfosPratiquesPage from '@pages/public/InfosPratiquesPage'
-import ActualitesPage  from '@pages/public/ActualitesPage'
-import ArticleDetailPage from '@pages/public/ArticleDetailPage'
-import GaleriePage     from '@pages/public/GaleriePage'
-import GalerieDetailPage from '@pages/public/GalerieDetailPage'
-import ContactPage     from '@pages/public/ContactPage'
-import NotFoundPage    from '@pages/public/NotFoundPage'
+import HomePage              from '@pages/public/HomePage'
+import PresentationPage      from '@pages/public/PresentationPage'
+import CyclesFormationPage   from '@pages/public/CyclesFormationPage'
+import InfosParentsPage      from '@pages/public/InfosParentsPage'
+
+import ActualitesPage        from '@pages/public/ActualitesPage'
+import ArticleDetailPage     from '@pages/public/ArticleDetailPage'
+import GaleriePage           from '@pages/public/GaleriePage'
+import GalerieDetailPage     from '@pages/public/GalerieDetailPage'
+import ContactsPage          from '@pages/public/ContactPage'
+import NotFoundPage          from '@pages/public/NotFoundPage'
 
 // Pages admin
-import LoginPage       from '@pages/admin/LoginPage'
-import DashboardPage   from '@pages/admin/DashboardPage'
-import ArticlesAdminPage from '@pages/admin/ArticlesAdminPage'
-import ArticleFormPage from '@pages/admin/ArticleFormPage'
-import GaleriesAdminPage from '@pages/admin/GaleriesAdminPage'
-import GalerieFormPage from '@pages/admin/GalerieFormPage'
-import ContactsAdminPage from '@pages/admin/ContactsAdminPage'
-import NiveauxAdminPage from '@pages/admin/NiveauxAdminPage'
-import TemoignagesAdminPage from '@pages/admin/TemoignagesAdminPage'
-import EquipeAdminPage from '@pages/admin/EquipeAdminPage'
-import ChiffresAdminPage from '@pages/admin/ChiffresAdminPage'
-import CalendrierAdminPage from '@pages/admin/CalendrierAdminPage'
-import HorairesAdminPage from '@pages/admin/HorairesAdminPage'
+import LoginPage             from '@pages/admin/LoginPage'
+import DashboardPage         from '@pages/admin/DashboardPage'
+import ArticlesAdminPage     from '@pages/admin/ArticlesAdminPage'
+import ArticleFormPage       from '@pages/admin/ArticleFormPage'
+import GaleriesAdminPage     from '@pages/admin/GaleriesAdminPage'
+import GalerieFormPage       from '@pages/admin/GalerieFormPage'
+import ContactsAdminPage     from '@pages/admin/ContactsAdminPage'
+import NiveauxAdminPage      from '@pages/admin/NiveauxAdminPage'
+import TemoignagesAdminPage  from '@pages/admin/TemoignagesAdminPage'
+import EquipeAdminPage       from '@pages/admin/EquipeAdminPage'
+import ChiffresAdminPage     from '@pages/admin/ChiffresAdminPage'
+import CalendrierAdminPage   from '@pages/admin/CalendrierAdminPage'
+import HorairesAdminPage     from '@pages/admin/HorairesAdminPage'
 import CommentairesAdminPage from '@pages/admin/CommentairesAdminPage'
-import UsersAdminPage  from '@pages/admin/UsersAdminPage'
-import PagesAdminPage  from '@pages/admin/PagesAdminPage'
+import UsersAdminPage        from '@pages/admin/UsersAdminPage'
+import PagesAdminPage        from '@pages/admin/PagesAdminPage'
 
 export default function App() {
   return (
@@ -49,40 +50,46 @@ export default function App() {
       <Routes>
         {/* ─── Routes publiques ─── */}
         <Route element={<PublicLayout />}>
-          <Route path="/"                    element={<HomePage />} />
-          <Route path="/ecole"               element={<EcolePage />} />
-          <Route path="/pedagogie"           element={<PedagogiePage />} />
-          <Route path="/informations-pratiques" element={<InfosPratiquesPage />} />
-          <Route path="/actualites"          element={<ActualitesPage />} />
-          <Route path="/actualites/:slug"    element={<ArticleDetailPage />} />
-          <Route path="/galerie"             element={<GaleriePage />} />
-          <Route path="/galerie/:slug"       element={<GalerieDetailPage />} />
-          <Route path="/contact"             element={<ContactPage />} />
-          <Route path="*"                    element={<NotFoundPage />} />
+          <Route path="/"                           element={<HomePage />} />
+          <Route path="/presentation"               element={<PresentationPage />} />
+          <Route path="/cycles-formation"           element={<CyclesFormationPage />} />
+          <Route path="/informations-parents"       element={<InfosParentsPage />} />
+        
+          <Route path="/actualites"                 element={<ActualitesPage />} />
+          <Route path="/actualites/:slug"           element={<ArticleDetailPage />} />
+          <Route path="/galerie"                    element={<GaleriePage />} />
+          <Route path="/galerie/:slug"              element={<GalerieDetailPage />} />
+          <Route path="/contacts"                   element={<ContactsPage />} />
+          {/* Redirections anciens liens */}
+          <Route path="/ecole"                      element={<PresentationPage />} />
+          <Route path="/pedagogie"                  element={<CyclesFormationPage />} />
+          <Route path="/informations-pratiques"     element={<InfosParentsPage />} />
+          <Route path="/contact"                    element={<ContactsPage />} />
+          <Route path="*"                           element={<NotFoundPage />} />
         </Route>
 
-        {/* ─── Login admin (sans layout) ─── */}
+        {/* ─── Login admin ─── */}
         <Route path="/admin/login" element={<LoginPage />} />
 
         {/* ─── Routes admin protégées ─── */}
         <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
-          <Route index                       element={<DashboardPage />} />
-          <Route path="articles"             element={<ArticlesAdminPage />} />
-          <Route path="articles/nouveau"     element={<ArticleFormPage />} />
-          <Route path="articles/:id/modifier" element={<ArticleFormPage />} />
-          <Route path="galeries"             element={<GaleriesAdminPage />} />
-          <Route path="galeries/nouvelle"    element={<GalerieFormPage />} />
-          <Route path="galeries/:id/modifier" element={<GalerieFormPage />} />
-          <Route path="contacts"             element={<ContactsAdminPage />} />
-          <Route path="niveaux"              element={<NiveauxAdminPage />} />
-          <Route path="temoignages"          element={<TemoignagesAdminPage />} />
-          <Route path="equipe"               element={<EquipeAdminPage />} />
-          <Route path="chiffres-cles"        element={<ChiffresAdminPage />} />
-          <Route path="calendrier"           element={<CalendrierAdminPage />} />
-          <Route path="horaires"             element={<HorairesAdminPage />} />
-          <Route path="commentaires"         element={<CommentairesAdminPage />} />
-          <Route path="utilisateurs"         element={<UsersAdminPage />} />
-          <Route path="pages"                element={<PagesAdminPage />} />
+          <Route index                          element={<DashboardPage />} />
+          <Route path="articles"                element={<ArticlesAdminPage />} />
+          <Route path="articles/nouveau"        element={<ArticleFormPage />} />
+          <Route path="articles/:id/modifier"   element={<ArticleFormPage />} />
+          <Route path="galeries"                element={<GaleriesAdminPage />} />
+          <Route path="galeries/nouvelle"       element={<GalerieFormPage />} />
+          <Route path="galeries/:id/modifier"   element={<GalerieFormPage />} />
+          <Route path="contacts"                element={<ContactsAdminPage />} />
+          <Route path="niveaux"                 element={<NiveauxAdminPage />} />
+          <Route path="temoignages"             element={<TemoignagesAdminPage />} />
+          <Route path="equipe"                  element={<EquipeAdminPage />} />
+          <Route path="chiffres-cles"           element={<ChiffresAdminPage />} />
+          <Route path="calendrier"              element={<CalendrierAdminPage />} />
+          <Route path="horaires"                element={<HorairesAdminPage />} />
+          <Route path="commentaires"            element={<CommentairesAdminPage />} />
+          <Route path="utilisateurs"            element={<UsersAdminPage />} />
+          <Route path="pages"                   element={<PagesAdminPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
