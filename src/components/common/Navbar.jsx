@@ -32,7 +32,6 @@ const STYLES = `
     align-items: center;
     justify-content: center;
   }
-  /* Desktop nav */
   .navbar-desktop {
     display: flex;
     align-items: center;
@@ -55,7 +54,6 @@ const STYLES = `
   .nav-link.active { background: #8DC31E; color: #fff; }
   .nav-link.active:hover { background: #7ab518; color: #fff; }
 
-  /* Burger button */
   .navbar-burger {
     display: none;
     flex-direction: column;
@@ -77,7 +75,6 @@ const STYLES = `
     display: block;
   }
 
-  /* Mobile drawer */
   .navbar-drawer {
     display: none;
     overflow: hidden;
@@ -112,22 +109,17 @@ const STYLES = `
   .drawer-link:hover { background: #F2F9E5; color: #2D6A1F; }
   .drawer-link.active { background: #8DC31E; color: #fff; }
 
-  /* ── Responsive ── */
-
-  /* Tablette large : réduire padding et font */
   @media (max-width: 1100px) {
     .nav-link { font-size: 14px; padding: 9px 12px; }
     .navbar-inner { padding: 0 20px; }
   }
 
-  /* Tablette : basculer sur burger ET désactiver le fixed */
   @media (max-width: 860px) {
     .navbar-desktop { display: none; }
     .navbar-burger { display: flex; }
     .navbar-drawer { display: block; }
     .navbar-inner { justify-content: flex-end; }
 
-    /* Désactive le positionnement fixe sur mobile */
     .navbar-root {
       position: relative !important;
       top: auto !important;
@@ -135,14 +127,12 @@ const STYLES = `
     }
   }
 
-  /* Mobile */
   @media (max-width: 480px) {
     .navbar-inner { padding: 0 16px; height: 60px; }
     .drawer-link { font-size: 15px; padding: 12px 16px; }
   }
 `
 
-// Calcule la hauteur du topbar selon la largeur d'écran
 function useTopbarHeight() {
   const [h, setH] = useState(83)
   useEffect(() => {
@@ -161,12 +151,10 @@ function useTopbarHeight() {
 }
 
 export default function Navbar() {
-  const [scrolled,   setScrolled]   = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const location  = useLocation()
-  const topbarH   = useTopbarHeight()
-
-  // Détecte si on est en mode desktop (>860px) pour n'afficher le spacer que sur desktop
+  const location = useLocation()
+  const topbarH = useTopbarHeight()
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 860)
 
   useEffect(() => {
@@ -194,10 +182,9 @@ export default function Navbar() {
 
       <header
         className={`navbar-root${scrolled ? ' scrolled' : ''}`}
-        style={{ top: `${topbarH}px` }}
+        style={isDesktop ? { top: `${topbarH}px` } : {}}
       >
         <div className="navbar-inner">
-          {/* Desktop */}
           <nav className="navbar-desktop">
             {LINKS.map(link => (
               <NavLink
@@ -211,7 +198,6 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Burger */}
           <button
             className="navbar-burger"
             onClick={() => setMobileOpen(o => !o)}
@@ -223,7 +209,6 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Drawer mobile */}
         <div className={`navbar-drawer${mobileOpen ? ' open' : ''}`}>
           <div className="drawer-inner">
             {LINKS.map(link => (
@@ -240,7 +225,6 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Spacer uniquement sur desktop (car seule la version desktop est fixed) */}
       {isDesktop && <div style={{ height: `${topbarH + navbarH}px` }} />}
     </>
   )
