@@ -120,12 +120,19 @@ const STYLES = `
     .navbar-inner { padding: 0 20px; }
   }
 
-  /* Tablette : basculer sur burger */
+  /* Tablette : basculer sur burger ET désactiver le fixed */
   @media (max-width: 860px) {
     .navbar-desktop { display: none; }
     .navbar-burger { display: flex; }
     .navbar-drawer { display: block; }
     .navbar-inner { justify-content: flex-end; }
+
+    /* Désactive le positionnement fixe sur mobile */
+    .navbar-root {
+      position: relative !important;
+      top: auto !important;
+      box-shadow: none !important;
+    }
   }
 
   /* Mobile */
@@ -136,7 +143,6 @@ const STYLES = `
 `
 
 // Calcule la hauteur du topbar selon la largeur d'écran
-// On utilise un state pour que le spacer soit dynamique
 function useTopbarHeight() {
   const [h, setH] = useState(83)
   useEffect(() => {
@@ -159,6 +165,15 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const location  = useLocation()
   const topbarH   = useTopbarHeight()
+
+  // Détecte si on est en mode desktop (>860px) pour n'afficher le spacer que sur desktop
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 860)
+
+  useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth > 860)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 10)
@@ -225,8 +240,8 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Spacer dynamique = topbar + navbar */}
-      <div style={{ height: `${topbarH + navbarH}px` }} />
+      {/* Spacer uniquement sur desktop (car seule la version desktop est fixed) */}
+      {isDesktop && <div style={{ height: `${topbarH + navbarH}px` }} />}
     </>
   )
 }
