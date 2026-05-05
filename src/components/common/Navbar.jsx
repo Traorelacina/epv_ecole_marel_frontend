@@ -109,17 +109,21 @@ const STYLES = `
   .drawer-link:hover { background: #F2F9E5; color: #2D6A1F; }
   .drawer-link.active { background: #8DC31E; color: #fff; }
 
+  /* ── Responsive ── */
+
   @media (max-width: 1100px) {
     .nav-link { font-size: 14px; padding: 9px 12px; }
     .navbar-inner { padding: 0 20px; }
   }
 
+  /* Tablette et mobile : la barre n'est plus fixe, elle défile */
   @media (max-width: 860px) {
     .navbar-desktop { display: none; }
     .navbar-burger { display: flex; }
     .navbar-drawer { display: block; }
     .navbar-inner { justify-content: flex-end; }
 
+    /* Désactive le fixed : la barre devient relative et suit le scroll */
     .navbar-root {
       position: relative !important;
       top: auto !important;
@@ -182,6 +186,7 @@ export default function Navbar() {
 
       <header
         className={`navbar-root${scrolled ? ' scrolled' : ''}`}
+        // Le top n'est appliqué que sur desktop (car sur mobile la position est relative)
         style={isDesktop ? { top: `${topbarH}px` } : {}}
       >
         <div className="navbar-inner">
@@ -225,6 +230,7 @@ export default function Navbar() {
         </div>
       </header>
 
+      {/* Espace réservé uniquement sur desktop (car seule la version desktop est fixe) */}
       {isDesktop && <div style={{ height: `${topbarH + navbarH}px` }} />}
     </>
   )
