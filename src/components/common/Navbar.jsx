@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
-import logo from '../../assets/images/logo_marel.png'
+import { NavLink, useLocation } from 'react-router-dom'
 
 const LINKS = [
   { to: '/',                     label: 'Accueil' },
@@ -11,14 +10,8 @@ const LINKS = [
   { to: '/contacts',             label: 'Contacts' },
 ]
 
-const FLASH_H  = 38
-const TOPBAR_H = 68   // hauteur topbar
-
 const STYLES = `
   .navbar-root {
-    position: fixed;
-    left: 0; right: 0;
-    z-index: 1000;
     background: #8DC31E;
     transition: box-shadow .3s ease;
   }
@@ -29,37 +22,20 @@ const STYLES = `
     max-width: 1280px;
     margin: 0 auto;
     padding: 0 32px;
-    height: 100px;
+    height: 60px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-  }
-
-  /* ── Logo */
-  .navbar-logo-link {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-    text-decoration: none;
-  }
-  .navbar-logo {
-    width: 100px; height: 100px;
-    object-fit: contain;
-    display: block;
-    filter: drop-shadow(0 2px 6px rgba(0,0,0,.15));
+    justify-content: center;
   }
 
   /* ── Liens desktop */
   .navbar-desktop {
     display: flex;
     align-items: center;
-    gap: 2px;
-    flex: 1;
-    justify-content: flex-end;
+    gap: 4px;
   }
   .nav-link {
-    padding: 9px 15px;
+    padding: 9px 16px;
     border-radius: 6px;
     font-size: 13px;
     font-weight: 700;
@@ -70,7 +46,7 @@ const STYLES = `
     text-transform: uppercase;
     transition: background .2s, color .2s;
   }
-  .nav-link:hover { background: rgba(0,0,0,.18); }
+  .nav-link:hover  { background: rgba(0,0,0,.18); }
   .nav-link.active { background: #1a1a1a; color: #fff; }
   .nav-link.active:hover { background: #111; }
 
@@ -126,13 +102,13 @@ const STYLES = `
     letter-spacing: .03em;
     transition: background .15s, color .15s;
   }
-  .drawer-link:hover { background: #F2F9E5; color: #2D6A1F; }
+  .drawer-link:hover  { background: #F2F9E5; color: #2D6A1F; }
   .drawer-link.active { background: #8DC31E; color: #fff; }
 
   /* Tablette */
   @media (max-width: 1100px) {
-    .nav-link { font-size: 12px; padding: 8px 10px; }
-    .navbar-inner { padding: 0 20px; height: 90px; }
+    .nav-link { font-size: 12px; padding: 8px 11px; }
+    .navbar-inner { padding: 0 20px; }
   }
 
   /* Mobile */
@@ -140,31 +116,19 @@ const STYLES = `
     .navbar-desktop { display: none; }
     .navbar-burger  { display: flex; }
     .navbar-drawer  { display: block; }
-    .navbar-root {
-      position: relative !important;
-      top: auto !important;
-      box-shadow: none !important;
-    }
-    .navbar-inner { height: 80px; }
+    .navbar-inner   { justify-content: flex-end; height: 54px; }
   }
 
   @media (max-width: 480px) {
-    .navbar-inner { padding: 0 16px; height: 74px; }
-    .drawer-link { font-size: 14px; padding: 12px 16px; }
+    .navbar-inner { padding: 0 16px; }
+    .drawer-link  { font-size: 14px; padding: 12px 16px; }
   }
 `
 
 export default function Navbar() {
   const [scrolled,   setScrolled]   = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [isDesktop,  setIsDesktop]  = useState(window.innerWidth > 860)
   const location = useLocation()
-
-  useEffect(() => {
-    const fn = () => setIsDesktop(window.innerWidth > 860)
-    window.addEventListener('resize', fn)
-    return () => window.removeEventListener('resize', fn)
-  }, [])
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 10)
@@ -177,24 +141,14 @@ export default function Navbar() {
     setMobileOpen(false)
   }, [location])
 
-  const topOffset = FLASH_H + TOPBAR_H  // 38 + 52 = 90px
-
   return (
     <>
       <style>{STYLES}</style>
 
-      <header
-        className={`navbar-root${scrolled ? ' scrolled' : ''}`}
-        style={isDesktop ? { top: `${topOffset}px` } : {}}
-      >
+      <header className={`navbar-root${scrolled ? ' scrolled' : ''}`}>
         <div className="navbar-inner">
 
-          {/* Logo à gauche */}
-          <Link to="/" className="navbar-logo-link">
-            <img src={logo} alt="EPV MAREL" className="navbar-logo" />
-          </Link>
-
-          {/* Liens desktop à droite */}
+          {/* Liens desktop centrés */}
           <nav className="navbar-desktop">
             {LINKS.map(link => (
               <NavLink
@@ -218,6 +172,7 @@ export default function Navbar() {
             <span className="burger-bar" style={{ opacity: mobileOpen ? 0 : 1 }} />
             <span className="burger-bar" style={{ transform: mobileOpen ? 'rotate(-45deg) translate(0,-7.5px)' : 'none' }} />
           </button>
+
         </div>
 
         {/* Drawer mobile */}
@@ -236,11 +191,6 @@ export default function Navbar() {
           </div>
         </div>
       </header>
-
-      {/* Spacer : flash 38 + topbar 68 + navbar 100 = 206px */}
-      {isDesktop && (
-        <div style={{ height: `${topOffset + 100}px` }} />
-      )}
     </>
   )
 }

@@ -6,9 +6,6 @@ const STYLES = `
     display: flex;
     align-items: center;
     overflow: hidden;
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 1200;
   }
   .flash-label {
     background: #8DC31E;
@@ -32,7 +29,8 @@ const STYLES = `
     animation: blink 1s infinite;
   }
   @keyframes blink {
-    0%,100%{opacity:1} 50%{opacity:0}
+    0%,100% { opacity: 1; }
+    50%      { opacity: 0; }
   }
   .flash-track {
     flex: 1;
@@ -43,11 +41,14 @@ const STYLES = `
     white-space: nowrap;
     font-size: 13px;
     font-weight: 500;
-    color: rgba(255,255,255,.88);
-    animation: ticker 55s linear infinite;
+    color: #fff;
+    animation: ticker 90s linear infinite;
     padding-left: 60px;
   }
-  .flash-ticker strong { color: #8DC31E; font-weight: 800; }
+  .flash-ticker strong {
+    color: #fff;
+    font-weight: 700;
+  }
   @keyframes ticker {
     from { transform: translateX(100vw); }
     to   { transform: translateX(-100%); }
