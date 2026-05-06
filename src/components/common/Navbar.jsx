@@ -6,7 +6,7 @@ const LINKS = [
   { to: '/presentation',         label: 'Présentation' },
   { to: '/cycles-formation',     label: 'Cycles de Formation' },
   { to: '/informations-parents', label: 'Informations Parents' },
-  { to: '/activites-evenements', label: 'Activités et évènements' },
+  { to: '/actualites', label: 'Activités et évènements' },
   { to: '/contacts',             label: 'Contacts' },
 ]
 

@@ -10,7 +10,7 @@ import {
 import { publicService } from '@services/publicService'
 import { CTASection } from '@components/sections/AllSections'
 import { useInView } from '@hooks/useInView'
-import pedagogieImage from '../../assets/images/pedagogie_marel.jpeg'
+import pedagogieImage from '../../assets/images/ImageCercle2MenuCycledeformation.jpeg'
 
 const ANIMATION_STYLES = `
   @keyframes spinSlow    { to { transform: rotate(360deg); } }

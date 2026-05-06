@@ -12,7 +12,7 @@ import {
   Bus, Utensils, ScrollText,
 } from 'lucide-react'
 import { useInView } from '@hooks/useInView'
-import infosImage from '../../assets/images/infos_marel.jpeg'
+import infosImage from '../../assets/images/ImageCercle3MenuInfoParent.jpeg'
 
 const TYPE_COLORS = { vacances: '#8DC31E', rentree: '#2D6A1F', examen: '#D4191A', evenement: '#2563EB', fermeture: '#9B59B6', autre: '#6B7280' }
 const TYPE_LABELS = { vacances: 'Vacances', rentree: 'Rentrée', examen: 'Examen', evenement: 'Événement', fermeture: 'Fermeture', autre: 'Autre' }

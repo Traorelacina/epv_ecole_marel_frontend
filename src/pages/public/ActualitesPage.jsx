@@ -9,7 +9,7 @@ import { publicService } from '@services/publicService'
 import { useInView } from '@hooks/useInView'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import actualitesImage from '../../assets/images/actualites_marel.jpeg'
+import actualitesImage from '../../assets/images/ImageCercle4Activiteetevt.jpeg'
 
 const STORAGE = import.meta.env.VITE_STORAGE_URL || 'https://ideal-ilse-freelence-89b443a4.koyeb.app/'
 

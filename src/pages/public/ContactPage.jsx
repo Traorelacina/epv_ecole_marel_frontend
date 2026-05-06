@@ -5,7 +5,7 @@ import { MapPin, Phone, Mail, Clock, Send, CheckCircle, ChevronRight, ArrowRight
 import { publicService } from '@services/publicService'
 import { useInView } from '@hooks/useInView'
 import toast from 'react-hot-toast'
-import contactImage from '../../assets/images/contact_marel.jpeg'
+import contactImage from '../../assets/images/ImageCercle5MenuNosContacts.jpeg'
 
 const INFOS = [
   { icon: MapPin,  label: 'Adresse',       lines: ['Deux Plateaux 8eme Tranche', 'Cocody — Abidjan, Cote d\'Ivoire'] },
