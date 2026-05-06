@@ -42,20 +42,30 @@ const STYLES = `
     position: relative;
   }
   .flash-ticker {
-    display: inline-flex;
-    animation: ticker 120s linear infinite;
+    display: flex;
+    width: max-content;
+    animation: ticker 90s linear infinite;
+    transform: translate3d(0, 0, 0); /* accélération GPU */
+    backface-visibility: hidden;
     will-change: transform;
   }
   .flash-ticker span {
     white-space: nowrap;
     padding-right: 60px;
+    display: inline-block;
   }
   @keyframes ticker {
     0% {
-      transform: translateX(0);
+      transform: translate3d(0, 0, 0);
     }
     100% {
-      transform: translateX(-50%);
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+  /* Redémarrage forcé sur mobile (évite la mise en pause) */
+  @media (max-width: 768px) {
+    .flash-ticker {
+      animation-duration: 120s; /* plus lent mais surtout redémarrage garanti */
     }
   }
 `
@@ -68,8 +78,31 @@ export default function FlashInfo() {
     </>
   )
 
-  // Deux copies identiques pour l'effet de boucle
-  // L'animation translateX(-50%) décalera exactement d'une copie
+  // Référence pour forcer le redémarrage de l'animation au cas où
+  const tickerRef = useRef(null)
+
+  useEffect(() => {
+    // Force le redémarrage de l'animation après un court délai
+    // Cela résout les cas où l'animation ne démarre pas sur certains mobiles
+    const ticker = tickerRef.current
+    if (!ticker) return
+
+    const forceRestart = () => {
+      ticker.style.animation = 'none'
+      ticker.offsetHeight // force reflow
+      ticker.style.animation = null
+    }
+
+    // Redémarrage après chargement complet et après un délai
+    const timer = setTimeout(forceRestart, 100)
+    window.addEventListener('load', forceRestart)
+
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('load', forceRestart)
+    }
+  }, [])
+
   return (
     <>
       <style>{STYLES}</style>
@@ -79,7 +112,7 @@ export default function FlashInfo() {
           Flash Info
         </div>
         <div className="flash-track">
-          <div className="flash-ticker">
+          <div className="flash-ticker" ref={tickerRef}>
             <span>{message}</span>
             <span>{message}</span>
           </div>
