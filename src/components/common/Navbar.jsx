@@ -12,7 +12,7 @@ const LINKS = [
 
 const STYLES = `
   .navbar-root {
-    background: #8DC31E;
+    background: #8DC31E; /* Couleur exacte du logo */
     transition: box-shadow .3s ease;
   }
   .navbar-root.scrolled {
@@ -47,8 +47,8 @@ const STYLES = `
     transition: background .2s, color .2s;
   }
   .nav-link:hover  { background: rgba(0,0,0,.18); }
-  .nav-link.active { background: #1a1a1a; color: #fff; }
-  .nav-link.active:hover { background: #111; }
+  .nav-link.active { background: #2D6A1F; color: #fff; } /* Vert foncé cohérent */
+  .nav-link.active:hover { background: #1A4A12; }
 
   /* ── Burger */
   .navbar-burger {

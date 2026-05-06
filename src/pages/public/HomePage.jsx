@@ -196,15 +196,13 @@ function StatsSection() {
   const stats = [
     { end: 25,  suffix: '+', label: "Années d'expérience", icon: Award,         delay: 1 },
     { end: 100, suffix: '%', label: 'Réussite au CEPE',    icon: GraduationCap, delay: 2 },
-    { end: 6,   suffix: '',  label: 'Niveaux scolaires',   icon: BookOpen,      delay: 3 },
-    { end: 500, suffix: '+', label: 'Élèves accompagnés',  icon: Users,         delay: 4 },
+    { end: 500, suffix: '+', label: 'Élèves accompagnés',  icon: Users,         delay: 3 },
   ]
 
   return (
     <section style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #F3F4F6' }}>
       <div className="wrap">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}
-             className="grid grid-cols-2 lg:grid-cols-4"
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}
              id="stats-section"
         >
           {stats.map((s, i) => (
@@ -286,7 +284,7 @@ function HeroSection() {
               <p style={{
                 fontFamily: "'Sora', sans-serif",
                 fontWeight: 600,
-                fontSize: 'clamp(18px, 3vw, 28px)',
+                fontSize: 'clamp(13px, 2vw, 16px)',
                 color: 'rgba(255,255,255,0.88)',
                 fontStyle: 'italic',
                 lineHeight: 1.7,

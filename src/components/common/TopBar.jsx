@@ -6,7 +6,7 @@ import logo from '../../assets/images/logo_marel.png'
 const STYLES = `
   .topbar-root {
     background: #fff;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 2px solid #8DC31E; /* Accent vert du logo */
     overflow: visible;
   }
   .topbar-inner {
@@ -55,10 +55,11 @@ const STYLES = `
   .topbar-icon {
     width: 46px; height: 46px;
     border-radius: 50%;
-    border: 2px solid #8DC31E;
-    color: #8DC31E;
+    border: 2px solid #8DC31E; /* Vert logo */
+    color: #8DC31E;            /* Vert logo */
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
+    background: #F2F9E5;       /* Vert clair en fond */
   }
 
   .topbar-phones {
@@ -69,7 +70,8 @@ const STYLES = `
   .topbar-phones .topbar-val + .topbar-val::before {
     content: '|';
     margin-right: 8px;
-    color: #ccc;
+    color: #8DC31E; /* Accent vert au lieu de gris */
+    font-weight: bold;
   }
 
   .topbar-val {
@@ -82,9 +84,9 @@ const STYLES = `
   }
 
   .topbar-sep {
-    width: 1px;
+    width: 2px;
     height: 36px;
-    background: #e5e7eb;
+    background: #8DC31E; /* Accent vert du logo */
     flex-shrink: 0;
   }
 
