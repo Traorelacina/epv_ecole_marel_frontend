@@ -7,9 +7,9 @@ import {
 } from 'lucide-react'
 import { publicService } from '@services/publicService'
 import { useInView } from '@hooks/useInView'
+import { useCounter } from '@hooks/useCounter'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import { FaFacebook } from 'react-icons/fa'
 
 /* ── Images locales ── */
 import logo          from '../../assets/images/logo_marel.png'
@@ -41,6 +41,8 @@ const GLOBAL_STYLES = `
   @keyframes pulseGreen     { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.5;transform:scale(1.35);} }
   @keyframes fadeIn         { from{opacity:0;} to{opacity:1;} }
   @keyframes slideIndicator { from{width:0;} to{width:100%;} }
+  @keyframes spinSlow       { to { transform: rotate(360deg); } }
+  @keyframes countUp        { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
 
   /* ── RESPONSIVE BASE ── */
   .hero-grid {
@@ -102,7 +104,7 @@ const GLOBAL_STYLES = `
   .cycles-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0;
+    gap: 16px;
   }
   .articles-grid {
     display: grid;
@@ -127,6 +129,7 @@ const GLOBAL_STYLES = `
     }
     .cycles-grid {
       grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
     }
   }
   @media (min-width: 768px) {
@@ -155,12 +158,69 @@ const GLOBAL_STYLES = `
 const SLIDES = [imgSlide1, imgSlide2, imgSlide3]
 
 
+/* ── STATS SECTION (sous le hero) ── */
+function StatItem({ end, suffix, label, icon: Icon, delay }) {
+  const [ref, inView] = useInView(0.3)
+  const [count, run]  = useCounter(end)
+  const ran = useRef(false)
 
-/* ── HERO SECTION — Slides grands et clairs ── */
+  useEffect(() => {
+    if (inView && !ran.current) { ran.current = true; run() }
+  }, [inView])
+
+  return (
+    <div
+      ref={ref}
+      className={inView ? `anim-fade-up d${delay}` : ''}
+      style={{
+        textAlign: 'center', padding: '32px 20px',
+        borderRight: '1px solid rgba(141,195,30,0.15)',
+      }}
+    >
+      <div style={{
+        width: '52px', height: '52px', borderRadius: '14px',
+        backgroundColor: '#F2F9E5', display: 'flex', alignItems: 'center', justifyContent: 'center',
+        margin: '0 auto 16px',
+      }}>
+        <Icon size={22} style={{ color: '#2D6A1F' }} />
+      </div>
+      <p style={{ fontFamily: "'Sora',sans-serif", fontSize: '40px', fontWeight: 800, color: '#2D6A1F', lineHeight: 1 }}>
+        {count}{suffix}
+      </p>
+      <p style={{ color: '#6B7280', fontSize: '13.5px', marginTop: '8px', fontWeight: 500 }}>{label}</p>
+    </div>
+  )
+}
+
+function StatsSection() {
+  const stats = [
+    { end: 25,  suffix: '+', label: "Années d'expérience", icon: Award,         delay: 1 },
+    { end: 100, suffix: '%', label: 'Réussite au CEPE',    icon: GraduationCap, delay: 2 },
+    { end: 6,   suffix: '',  label: 'Niveaux scolaires',   icon: BookOpen,      delay: 3 },
+    { end: 500, suffix: '+', label: 'Élèves accompagnés',  icon: Users,         delay: 4 },
+  ]
+
+  return (
+    <section style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #F3F4F6' }}>
+      <div className="wrap">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}
+             className="grid grid-cols-2 lg:grid-cols-4"
+             id="stats-section"
+        >
+          {stats.map((s, i) => (
+            <StatItem key={s.label} {...s} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+
+/* ── HERO SECTION — Slides grands et clairs, texte discret ── */
 function HeroSection() {
   const [loaded, setLoaded] = useState(false)
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [prevSlide, setPrevSlide] = useState(null)
 
   useEffect(() => {
     const t = setTimeout(() => setLoaded(true), 60)
@@ -169,22 +229,16 @@ function HeroSection() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setPrevSlide(currentSlide)
       setCurrentSlide(prev => (prev + 1) % SLIDES.length)
     }, 5000)
     return () => clearInterval(interval)
-  }, [currentSlide])
+  }, [])
 
-  const goTo = (idx) => {
-    setPrevSlide(currentSlide)
-    setCurrentSlide(idx)
-  }
+  const goTo = (idx) => setCurrentSlide(idx)
 
   return (
     <>
       <style>{GLOBAL_STYLES}</style>
-     
-     
 
       <section style={{
         position: 'relative',
@@ -194,7 +248,7 @@ function HeroSection() {
         overflow: 'hidden',
         backgroundColor: '#000',
       }}>
-        {/* ── SLIDESHOW BACKGROUND — plein écran, images nettes ── */}
+        {/* ── SLIDESHOW BACKGROUND ── */}
         {SLIDES.map((slide, idx) => (
           <div
             key={idx}
@@ -211,74 +265,40 @@ function HeroSection() {
           />
         ))}
 
-        {/* ── OVERLAY MINIMAL — sombre en bas seulement pour lisibilité du texte ── */}
+        {/* ── OVERLAY ── */}
         <div style={{
           position: 'absolute',
           inset: 0,
           zIndex: 1,
-          background: 'linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.40) 40%, rgba(0,0,0,0.15) 70%, rgba(0,0,0,0.05) 100%)',
+          background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0.08) 70%, rgba(0,0,0,0.03) 100%)',
         }} />
 
-        {/* ── CONTENU HERO ── */}
+        {/* ── CONTENU HERO — petit texte discret centré ── */}
         <div style={{ position: 'relative', zIndex: 10, width: '100%' }}>
           <div className="wrap">
-            <div className="hero-content" style={{ maxWidth: '700px' }}>
-
-              {/* Badge inscriptions */}
-              <div style={{
-                display: 'inline-flex', alignItems: 'center', gap: '8px',
-                padding: '6px 16px', borderRadius: '50px',
-                background: 'rgba(141,195,30,0.20)', border: '1px solid rgba(141,195,30,0.45)',
-                marginBottom: '20px',
-                opacity: loaded ? 1 : 0,
-                animation: loaded ? 'heroFadeUp .6s ease 100ms both' : 'none',
+            <div style={{
+              maxWidth: '680px',
+              padding: '0 20px 56px',
+              opacity: loaded ? 1 : 0,
+              animation: loaded ? 'heroFadeUp .8s ease 300ms both' : 'none',
+            }}>
+              {/* Citation discrète */}
+              <p style={{
+                fontFamily: "'Sora', sans-serif",
+                fontWeight: 600,
+                fontSize: 'clamp(18px, 3vw, 28px)',
+                color: 'rgba(255,255,255,0.88)',
+                fontStyle: 'italic',
+                lineHeight: 1.7,
+                borderLeft: '3px solid #8DC31E',
+                paddingLeft: '16px',
+                margin: 0,
               }}>
-                <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#8DC31E', animation: 'pulseGreen 2.5s ease-in-out infinite' }} />
-                <span style={{ color: '#B5D95A', fontSize: '11.5px', fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase' }}>
-                  Inscriptions ouvertes 2026 – 2027
-                </span>
-              </div>
-
-              {/* Titre */}
-              <h1 className="hero-title" style={{ opacity: loaded ? 1 : 0, animation: loaded ? 'heroFadeUp .7s ease 200ms both' : 'none' }}>
-                L'excellence académique
-              </h1>
-              <h1 className="hero-title" style={{ color: '#8DC31E', marginBottom: '20px', opacity: loaded ? 1 : 0, animation: loaded ? 'heroFadeUp .7s ease 320ms both' : 'none' }}>
-                depuis 2000
-              </h1>
-
-              {/* Sous-titre */}
-              <p className="hero-subtitle" style={{ opacity: loaded ? 1 : 0, animation: loaded ? 'heroFadeUp .7s ease 460ms both' : 'none' }}>
-                L'EPV MAREL forme les enfants de la Maternelle au CM2 avec passion et rigueur.{' '}
-                <strong style={{ color: '#B5D95A' }}>100% de réussite au CEPE depuis 2012.</strong>
+                « L'excellence académique depuis 2000. L'EPV MAREL forme les enfants de la Maternelle au CM2 avec passion et rigueur. »
               </p>
 
-              {/* Boutons */}
-              <div className="hero-btns" style={{ opacity: loaded ? 1 : 0, animation: loaded ? 'heroFadeUp .7s ease 580ms both' : 'none' }}>
-                <Link to="/contacts" className="btn-red" style={{ fontSize: '14px', padding: '13px 26px' }}>
-                  Inscrire mon enfant <ArrowRight size={16} />
-                </Link>
-                <Link to="/presentation" className="btn-white" style={{ fontSize: '14px', padding: '13px 26px' }}>
-                  Découvrir l'école
-                </Link>
-              </div>
-
-              {/* Stats */}
-              <div className="hero-stats" style={{ opacity: loaded ? 1 : 0, animation: loaded ? 'heroFadeUp .7s ease 720ms both' : 'none' }}>
-                {[
-                  { val: '25+',  label: "Ans d'expérience" },
-                  { val: '100%', label: 'Réussite CEPE' },
-                  { val: '500+', label: 'Élèves accompagnés' },
-                ].map(s => (
-                  <div key={s.label} style={{ borderLeft: '2px solid #8DC31E', paddingLeft: '14px' }}>
-                    <p style={{ fontFamily: "'Sora', sans-serif", fontSize: 'clamp(20px, 5vw, 28px)', fontWeight: 800, color: '#8DC31E', lineHeight: 1 }}>{s.val}</p>
-                    <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '11px', marginTop: '4px', fontWeight: 500 }}>{s.label}</p>
-                  </div>
-                ))}
-              </div>
-
               {/* Indicateurs de slides */}
-              <div style={{ display: 'flex', gap: '8px', marginTop: '36px', marginBottom: '8px' }}>
+              <div style={{ display: 'flex', gap: '8px', marginTop: '24px' }}>
                 {SLIDES.map((_, idx) => (
                   <button
                     key={idx}
@@ -332,22 +352,17 @@ function MotFondatriceSection() {
                 onError={e => { e.target.src = logo }}
               />
             </div>
-            <div style={{
-              position: 'absolute', bottom: '-16px', right: '-12px',
-              backgroundColor: '#8DC31E', borderRadius: '14px',
-              padding: '14px 18px', boxShadow: '0 8px 32px rgba(141,195,30,0.4)',
-              textAlign: 'center',
-            }}>
-              <p style={{ fontFamily: "'Sora', sans-serif", fontWeight: 800, fontSize: '20px', color: '#fff', lineHeight: 1 }}>25+</p>
-              <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '10px', marginTop: '3px' }}>Années d'expérience</p>
-            </div>
+            {/* Stat "25+" supprimée */}
           </div>
 
           {/* Texte */}
           <div className={inView ? 'anim-slide-r d1' : ''}>
-            <span className="section-label">Mot de la Fondatrice</span>
-            <h2 className="section-title" style={{ marginBottom: '6px' }}>Un engagement pour</h2>
-            <h2 className="section-title" style={{ color: '#2D6A1F', marginBottom: '24px' }}>l'avenir de vos enfants</h2>
+            {/* Label agrandi */}
+            <span className="section-label" style={{ fontSize: '15px', letterSpacing: '0.12em' }}>Mot de la Fondatrice</span>
+
+            {/* Sous-titre réduit */}
+            <h2 className="section-title" style={{ marginBottom: '6px', fontSize: 'clamp(1.3rem, 3vw, 1.8rem)' }}>Un engagement pour</h2>
+            <h2 className="section-title" style={{ color: '#2D6A1F', marginBottom: '24px', fontSize: 'clamp(1.3rem, 3vw, 1.8rem)' }}>l'avenir de vos enfants</h2>
             <span className="underline-green" />
 
             <div style={{ marginTop: '28px', position: 'relative' }}>
@@ -393,18 +408,30 @@ function CyclesFormationSection() {
     <section className="section" style={{ backgroundColor: '#ffffff' }}>
       <div className="wrap" ref={ref}>
         <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto 48px' }}>
-          <span className="section-label">Nos cycles de formation</span>
+          {/* Label "Nos cycles de formation" agrandi */}
+          <span
+            className="section-label"
+            style={{ fontSize: '16px', letterSpacing: '0.14em', fontWeight: 800 }}
+          >
+            Nos cycles de formation
+          </span>
+          {/* Titres inchangés */}
           <h2 className={`section-title ${inView ? 'anim-fade-up' : ''}`}>Un parcours complet</h2>
           <h2 className={`section-title ${inView ? 'anim-fade-up d1' : ''}`} style={{ color: '#2D6A1F' }}>de la crèche au CM2</h2>
         </div>
 
-        {/* Grille responsive 2 cols mobile, 4 cols desktop */}
+        {/* Grille avec espacement entre les cartes */}
         <div className="cycles-grid">
           {CYCLES.map((c, i) => (
             <div
               key={c.nom}
               className={inView ? `anim-fade-up d${i + 1}` : ''}
-              style={{ position: 'relative', overflow: 'hidden', aspectRatio: '3/4', cursor: 'pointer' }}
+              style={{
+                position: 'relative', overflow: 'hidden',
+                aspectRatio: '3/4', cursor: 'pointer',
+                borderRadius: '12px',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
+              }}
               onMouseEnter={e => {
                 e.currentTarget.querySelector('.overlay').style.opacity = '1'
                 e.currentTarget.querySelector('img').style.transform = 'scale(1.07)'
@@ -420,24 +447,44 @@ function CyclesFormationSection() {
                 style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease', display: 'block' }}
                 onError={e => { e.target.style.display = 'none' }}
               />
-              {/* Bandeau titre toujours visible */}
+              {/* Bandeau titre toujours visible — textes agrandis */}
               <div style={{
                 position: 'absolute', bottom: 0, left: 0, right: 0,
                 background: `linear-gradient(to top, ${c.color}ee 0%, ${c.color}99 50%, transparent 100%)`,
-                padding: 'clamp(24px, 5vw, 40px) clamp(12px, 3vw, 20px) clamp(12px, 3vw, 20px)',
+                padding: 'clamp(28px, 5vw, 48px) clamp(14px, 3vw, 24px) clamp(14px, 3vw, 22px)',
               }}>
-                <p style={{ fontFamily: "'Sora', sans-serif", fontWeight: 800, fontSize: 'clamp(13px, 2.5vw, 18px)', color: '#fff', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{c.nom}</p>
-                <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: 'clamp(10px, 2vw, 12px)', marginTop: '3px' }}>{c.age}</p>
+                <p style={{
+                  fontFamily: "'Sora', sans-serif", fontWeight: 800,
+                  fontSize: 'clamp(16px, 2.8vw, 22px)',
+                  color: '#fff', textTransform: 'uppercase', letterSpacing: '0.05em',
+                }}>{c.nom}</p>
+                <p style={{
+                  color: 'rgba(255,255,255,0.90)',
+                  fontSize: 'clamp(12px, 2vw, 15px)',
+                  marginTop: '4px', fontWeight: 500,
+                }}>{c.age}</p>
               </div>
-              {/* Overlay survol */}
+              {/* Overlay survol — textes agrandis */}
               <div className="overlay" style={{
                 position: 'absolute', inset: 0, opacity: 0, transition: 'opacity 0.3s ease',
                 background: `linear-gradient(to top, ${c.color}f0 0%, ${c.color}cc 100%)`,
-                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px',
               }}>
-                <p style={{ fontFamily: "'Sora', sans-serif", fontWeight: 800, fontSize: 'clamp(16px, 3vw, 20px)', color: '#fff', textAlign: 'center', marginBottom: '10px' }}>{c.nom}</p>
-                <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: 'clamp(11px, 2vw, 13.5px)', textAlign: 'center', lineHeight: 1.7 }}>{c.desc}</p>
-                <div style={{ marginTop: '16px', padding: '6px 16px', borderRadius: '50px', border: '2px solid rgba(255,255,255,0.6)', color: '#fff', fontSize: '11px', fontWeight: 700 }}>{c.age}</div>
+                <p style={{
+                  fontFamily: "'Sora', sans-serif", fontWeight: 800,
+                  fontSize: 'clamp(18px, 3vw, 24px)',
+                  color: '#fff', textAlign: 'center', marginBottom: '12px',
+                }}>{c.nom}</p>
+                <p style={{
+                  color: 'rgba(255,255,255,0.92)',
+                  fontSize: 'clamp(13px, 2vw, 16px)',
+                  textAlign: 'center', lineHeight: 1.7,
+                }}>{c.desc}</p>
+                <div style={{
+                  marginTop: '18px', padding: '7px 18px', borderRadius: '50px',
+                  border: '2px solid rgba(255,255,255,0.7)', color: '#fff',
+                  fontSize: 'clamp(12px, 1.8vw, 14px)', fontWeight: 700,
+                }}>{c.age}</div>
               </div>
             </div>
           ))}
@@ -598,6 +645,7 @@ export default function HomePage() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Helmet>
       <HeroSection />
+      <StatsSection />
       <MotFondatriceSection />
       <CyclesFormationSection />
       <ActualitesSection articles={data.articles} />

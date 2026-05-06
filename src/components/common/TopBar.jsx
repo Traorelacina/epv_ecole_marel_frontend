@@ -7,12 +7,13 @@ const STYLES = `
   .topbar-root {
     background: #fff;
     border-bottom: 1px solid #e5e7eb;
+    overflow: visible;
   }
   .topbar-inner {
     max-width: 1280px;
     margin: 0 auto;
     padding: 0 32px;
-    height: 100px;
+    height: 110px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -25,12 +26,14 @@ const STYLES = `
     align-items: center;
     flex-shrink: 0;
     text-decoration: none;
+    line-height: 0;
+    font-size: 0;
   }
   .topbar-logo {
     width: 100px; height: 100px;
     object-fit: contain;
     display: block;
-    filter: drop-shadow(0 2px 6px rgba(0,0,0,.12));
+    flex-shrink: 0;
   }
 
   /* ── Contacts */

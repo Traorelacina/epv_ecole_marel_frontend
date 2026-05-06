@@ -1,3 +1,5 @@
+import { useRef, useEffect } from 'react'
+
 const STYLES = `
   .flash-root {
     background: #1a1a1a;
@@ -6,6 +8,7 @@ const STYLES = `
     display: flex;
     align-items: center;
     overflow: hidden;
+    position: relative;
   }
   .flash-label {
     background: #8DC31E;
@@ -21,6 +24,7 @@ const STYLES = `
     white-space: nowrap;
     flex-shrink: 0;
     gap: 7px;
+    z-index: 2;
   }
   .flash-dot {
     width: 7px; height: 7px;
@@ -30,32 +34,42 @@ const STYLES = `
   }
   @keyframes blink {
     0%,100% { opacity: 1; }
-    50%      { opacity: 0; }
+    50% { opacity: 0; }
   }
   .flash-track {
     flex: 1;
     overflow: hidden;
+    position: relative;
   }
   .flash-ticker {
-    display: inline-block;
-    white-space: nowrap;
-    font-size: 13px;
-    font-weight: 500;
-    color: #fff;
-    animation: ticker 90s linear infinite;
-    padding-left: 60px;
+    display: inline-flex;
+    animation: ticker 120s linear infinite;
+    will-change: transform;
   }
-  .flash-ticker strong {
-    color: #fff;
-    font-weight: 700;
+  .flash-ticker span {
+    white-space: nowrap;
+    padding-right: 60px;
   }
   @keyframes ticker {
-    from { transform: translateX(100vw); }
-    to   { transform: translateX(-100%); }
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
   }
 `
 
 export default function FlashInfo() {
+  const message = (
+    <>
+      Les inscriptions et réinscriptions pour l'année académique <strong>2026–2027</strong> sont ouvertes !&nbsp;&nbsp;
+      Contactez-nous au <strong>+225 22 50 35 81</strong> ou venez nous rendre visite aux <strong>Deux Plateaux, Cocody — Abidjan</strong>.&nbsp;&nbsp;&nbsp;
+    </>
+  )
+
+  // Deux copies identiques pour l'effet de boucle
+  // L'animation translateX(-50%) décalera exactement d'une copie
   return (
     <>
       <style>{STYLES}</style>
@@ -65,13 +79,10 @@ export default function FlashInfo() {
           Flash Info
         </div>
         <div className="flash-track">
-          <span className="flash-ticker">
-            Les inscriptions et réinscriptions pour l'année académique <strong>2026–2027</strong> sont ouvertes !&nbsp;&nbsp;
-            Contactez-nous au <strong>+225 22 50 35 81</strong> ou venez nous rendre visite aux <strong>Deux Plateaux, Cocody — Abidjan</strong>.
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            Les inscriptions et réinscriptions pour l'année académique <strong>2026–2027</strong> sont ouvertes !&nbsp;&nbsp;
-            Contactez-nous au <strong>+225 22 50 35 81</strong> ou venez nous rendre visite aux <strong>Deux Plateaux, Cocody — Abidjan</strong>.
-          </span>
+          <div className="flash-ticker">
+            <span>{message}</span>
+            <span>{message}</span>
+          </div>
         </div>
       </div>
     </>
