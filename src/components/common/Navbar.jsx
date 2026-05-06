@@ -44,7 +44,7 @@ const STYLES = `
     text-decoration: none;
   }
   .navbar-logo {
-    width: 90px; height: 90px;
+    width: 100px; height: 100px;
     object-fit: contain;
     display: block;
     filter: drop-shadow(0 2px 6px rgba(0,0,0,.15));
