@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { MapPin, Phone, Mail, Clock, ChevronRight } from 'lucide-react'
-import logo from '../../assets/images/logo_marel.jpeg'
+import logo from '../../assets/images/logo_marel.png'
 
 const LINKS_NAV = [
   { to: '/',          label: 'Accueil' },

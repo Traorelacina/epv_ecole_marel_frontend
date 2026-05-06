@@ -12,7 +12,7 @@ import { fr } from 'date-fns/locale'
 import { FaFacebook } from 'react-icons/fa'
 
 /* ── Images locales ── */
-import logo          from '../../assets/images/logo_marel.jpeg'
+import logo          from '../../assets/images/logo_marel.png'
 
 // Cycles de formation
 import imgCreche     from '../../assets/images/CycledeformationCRECHE.jpeg'

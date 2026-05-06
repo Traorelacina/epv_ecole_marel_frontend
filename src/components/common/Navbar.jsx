@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
+import logo from '../../assets/images/logo_marel.png'
 
 const LINKS = [
   { to: '/',                     label: 'Accueil' },
@@ -10,8 +11,8 @@ const LINKS = [
   { to: '/contacts',             label: 'Contacts' },
 ]
 
-const FLASH_H  = 38    // bande noire
-const TOPBAR_H = 100   // 82px logo + 14px×2 padding + 1px border
+const FLASH_H  = 38
+const TOPBAR_H = 68   // hauteur topbar
 
 const STYLES = `
   .navbar-root {
@@ -22,16 +23,31 @@ const STYLES = `
     transition: box-shadow .3s ease;
   }
   .navbar-root.scrolled {
-    box-shadow: 0 4px 24px rgba(45,106,31,.25);
+    box-shadow: 0 4px 24px rgba(45,106,31,.30);
   }
   .navbar-inner {
     max-width: 1280px;
     margin: 0 auto;
     padding: 0 32px;
-    height: 56px;
+    height: 100px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  /* ── Logo */
+  .navbar-logo-link {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    text-decoration: none;
+  }
+  .navbar-logo {
+    width: 90px; height: 90px;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,.15));
   }
 
   /* ── Liens desktop */
@@ -39,16 +55,18 @@ const STYLES = `
     display: flex;
     align-items: center;
     gap: 2px;
+    flex: 1;
+    justify-content: flex-end;
   }
   .nav-link {
-    padding: 10px 18px;
+    padding: 9px 15px;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     text-decoration: none;
     color: #fff;
     white-space: nowrap;
-    letter-spacing: .03em;
+    letter-spacing: .04em;
     text-transform: uppercase;
     transition: background .2s, color .2s;
   }
@@ -113,8 +131,8 @@ const STYLES = `
 
   /* Tablette */
   @media (max-width: 1100px) {
-    .nav-link { font-size: 13px; padding: 9px 12px; }
-    .navbar-inner { padding: 0 20px; }
+    .nav-link { font-size: 12px; padding: 8px 10px; }
+    .navbar-inner { padding: 0 20px; height: 90px; }
   }
 
   /* Mobile */
@@ -122,17 +140,16 @@ const STYLES = `
     .navbar-desktop { display: none; }
     .navbar-burger  { display: flex; }
     .navbar-drawer  { display: block; }
-    .navbar-inner   { justify-content: flex-end; }
     .navbar-root {
       position: relative !important;
       top: auto !important;
       box-shadow: none !important;
     }
+    .navbar-inner { height: 80px; }
   }
 
   @media (max-width: 480px) {
-    .navbar-inner { padding: 0 16px; height: 48px; }
-    .navbar-burger { padding: 6px; }
+    .navbar-inner { padding: 0 16px; height: 74px; }
     .drawer-link { font-size: 14px; padding: 12px 16px; }
   }
 `
@@ -160,7 +177,7 @@ export default function Navbar() {
     setMobileOpen(false)
   }, [location])
 
-  const topOffset = FLASH_H + TOPBAR_H  // 38 + 111 = 149px
+  const topOffset = FLASH_H + TOPBAR_H  // 38 + 52 = 90px
 
   return (
     <>
@@ -171,6 +188,13 @@ export default function Navbar() {
         style={isDesktop ? { top: `${topOffset}px` } : {}}
       >
         <div className="navbar-inner">
+
+          {/* Logo à gauche */}
+          <Link to="/" className="navbar-logo-link">
+            <img src={logo} alt="EPV MAREL" className="navbar-logo" />
+          </Link>
+
+          {/* Liens desktop à droite */}
           <nav className="navbar-desktop">
             {LINKS.map(link => (
               <NavLink
@@ -184,6 +208,7 @@ export default function Navbar() {
             ))}
           </nav>
 
+          {/* Burger mobile */}
           <button
             className="navbar-burger"
             onClick={() => setMobileOpen(o => !o)}
@@ -195,6 +220,7 @@ export default function Navbar() {
           </button>
         </div>
 
+        {/* Drawer mobile */}
         <div className={`navbar-drawer${mobileOpen ? ' open' : ''}`}>
           <div className="drawer-inner">
             {LINKS.map(link => (
@@ -211,9 +237,9 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Spacer : flash 38 + topbar 111 + navbar 56 = 205px */}
+      {/* Spacer : flash 38 + topbar 68 + navbar 100 = 206px */}
       {isDesktop && (
-        <div style={{ height: `${topOffset + 56}px` }} />
+        <div style={{ height: `${topOffset + 100}px` }} />
       )}
     </>
   )

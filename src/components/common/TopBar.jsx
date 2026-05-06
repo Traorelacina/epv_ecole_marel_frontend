@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Phone, Mail } from 'lucide-react'
 import { FaFacebook } from 'react-icons/fa'
-import logo from '../../assets/images/logo_marel.jpeg'
 
 const STYLES = `
   .topbar-root {
@@ -14,62 +13,25 @@ const STYLES = `
   .topbar-inner {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 10px 32px;
-    height: 80px;
+    padding: 0 32px;
+    height: 68px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    position: relative;
+    justify-content: flex-end;
+    gap: 40px;
   }
 
-  /* ── Logo — sort du flux, dépasse en bas sur la navbar verte */
-  .topbar-brand {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    text-decoration: none;
-    flex-shrink: 0;
-    position: relative;
-    z-index: 10;
-  }
-  .topbar-logo-wrap {
-    width: 100px; height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .topbar-logo {
-    width: 100px; height: 100px;
-    object-fit: contain;
-    display: block;
-    filter: drop-shadow(0 2px 8px rgba(0,0,0,.10));
-  }
-  .topbar-brand-name {
-    font-family: 'Sora', sans-serif;
-    font-size: 26px;
-    font-weight: 800;
-    color: #1a1a1a;
-    letter-spacing: -.3px;
-    line-height: 1;
-    display: block;
-  }
-
-  /* ── Contacts */
-  .topbar-contacts {
-    display: flex;
-    align-items: center;
-    gap: 36px;
-  }
+  /* ── Contact items */
   .topbar-item {
     display: flex;
     align-items: center;
     gap: 14px;
     text-decoration: none;
     transition: opacity .2s;
+    white-space: nowrap;
   }
-  .topbar-item:hover { opacity: .75; }
+  .topbar-item:hover { opacity: .72; }
+
   .topbar-icon {
     width: 46px; height: 46px;
     border-radius: 50%;
@@ -78,49 +40,54 @@ const STYLES = `
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
   }
-  .topbar-lbl {
-    font-size: 12px;
-    font-weight: 700;
-    color: #1a1a1a;
-    line-height: 1;
-    margin: 0 0 5px;
-    display: block;
+
+  /* numéros sur une seule ligne */
+  .topbar-phones {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
+  .topbar-phones .topbar-val + .topbar-val::before {
+    content: '|';
+    margin-right: 8px;
+    color: #ccc;
+  }
+
   .topbar-val {
-    font-size: 13px;
-    font-weight: 500;
-    color: #555;
-    line-height: 1.55;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    line-height: 1;
     margin: 0;
-    display: block;
+    display: inline;
+  }
+
+  /* Séparateur vertical */
+  .topbar-sep {
+    width: 1px;
+    height: 36px;
+    background: #e5e7eb;
+    flex-shrink: 0;
   }
 
   /* Tablette */
-  @media (max-width: 1024px) {
-    .topbar-inner { padding: 10px 20px; gap: 16px; }
-    .topbar-contacts { gap: 20px; }
-    .topbar-logo, .topbar-logo-wrap { width: 82px; height: 82px; }
-    .topbar-brand-name { font-size: 22px; }
+  @media (max-width: 1100px) {
+    .topbar-inner { padding: 0 20px; gap: 24px; }
+    .topbar-val { font-size: 14px; }
+    .topbar-icon { width: 40px; height: 40px; }
   }
 
-  /* Mobile */
   @media (max-width: 860px) {
-    .topbar-root { position: relative; top: auto; }
-    .topbar-inner { flex-direction: column; align-items: flex-start; padding: 12px 16px; height: auto; }
-    .topbar-contacts { flex-wrap: wrap; gap: 14px; }
-    .topbar-logo, .topbar-logo-wrap { width: 64px; height: 64px; }
-    .topbar-brand-name { font-size: 20px; }
+    .topbar-inner { gap: 16px; padding: 0 16px; height: 60px; }
+    .topbar-val { font-size: 13px; }
+    .topbar-icon { width: 36px; height: 36px; }
   }
 
-  @media (max-width: 480px) {
-    .topbar-contacts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .topbar-icon { width: 38px; height: 38px; }
-    .topbar-lbl { font-size: 11px; }
-    .topbar-val { font-size: 12px; }
-  }
-
-  @media (max-width: 360px) {
-    .topbar-contacts { grid-template-columns: 1fr; }
+  /* Mobile : masquer téléphone et email, garder seulement FB */
+  @media (max-width: 600px) {
+    .topbar-hide-mobile { display: none; }
+    .topbar-sep { display: none; }
+    .topbar-inner { justify-content: center; }
   }
 `
 
@@ -131,46 +98,33 @@ export default function TopBar() {
       <div className="topbar-root">
         <div className="topbar-inner">
 
-          <Link to="/" className="topbar-brand">
-            <div className="topbar-logo-wrap">
-              <img src={logo} alt="EPV MAREL" className="topbar-logo" />
+          <a href="tel:+22522503581" className="topbar-item topbar-hide-mobile">
+            <div className="topbar-icon"><Phone size={20} /></div>
+            <div className="topbar-phones">
+              <span className="topbar-val">+225 22 50 35 81</span>
+              <span className="topbar-val">+225 05 61 56 10</span>
             </div>
-            <span className="topbar-brand-name">EPV MAREL</span>
-          </Link>
+          </a>
 
-          <div className="topbar-contacts">
+          <div className="topbar-sep topbar-hide-mobile" />
 
-            <a href="tel:+22522503581" className="topbar-item">
-              <div className="topbar-icon"><Phone size={19} /></div>
-              <div>
-                <span className="topbar-lbl">Nos contacts</span>
-                <span className="topbar-val">+225 22 50 35 81</span>
-                <span className="topbar-val">+225 05 61 56 10</span>
-              </div>
-            </a>
+          <a href="mailto:contact@etsmarel.ci" className="topbar-item topbar-hide-mobile">
+            <div className="topbar-icon"><Mail size={20} /></div>
+            <span className="topbar-val">contact@etsmarel.ci</span>
+          </a>
 
-            <a href="mailto:contact@etsmarel.ci" className="topbar-item">
-              <div className="topbar-icon"><Mail size={19} /></div>
-              <div>
-                <span className="topbar-lbl">Notre Email</span>
-                <span className="topbar-val">contact@etsmarel.ci</span>
-              </div>
-            </a>
+          <div className="topbar-sep topbar-hide-mobile" />
 
-            <a
-              href="https://www.facebook.com/gsmarel"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="topbar-item"
-            >
-              <div className="topbar-icon"><FaFacebook size={19} /></div>
-              <div>
-                <span className="topbar-lbl">Notre page Facebook</span>
-                <span className="topbar-val">facebook.com/gsmarel</span>
-              </div>
-            </a>
+          <a
+            href="https://www.facebook.com/gsmarel"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="topbar-item"
+          >
+            <div className="topbar-icon"><FaFacebook size={20} /></div>
+            <span className="topbar-val">Visitez notre page Facebook</span>
+          </a>
 
-          </div>
         </div>
       </div>
     </>
