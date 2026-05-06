@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react'
 
 const STYLES = `
   .flash-root {
-    background: #1a1a1a;
+    background: #1a1a1a; /* reste noir */
     color: #fff;
     height: 38px;
     display: flex;
@@ -11,7 +11,7 @@ const STYLES = `
     position: relative;
   }
   .flash-label {
-    background: #8DC31E;
+    background: #8DC31E; /* vert du logo uniquement ici */
     color: #fff;
     font-size: 11px;
     font-weight: 800;
@@ -62,10 +62,9 @@ const STYLES = `
       transform: translate3d(-50%, 0, 0);
     }
   }
-  /* Redémarrage forcé sur mobile (évite la mise en pause) */
   @media (max-width: 768px) {
     .flash-ticker {
-      animation-duration: 120s; /* plus lent mais surtout redémarrage garanti */
+      animation-duration: 120s;
     }
   }
 `
@@ -78,22 +77,18 @@ export default function FlashInfo() {
     </>
   )
 
-  // Référence pour forcer le redémarrage de l'animation au cas où
   const tickerRef = useRef(null)
 
   useEffect(() => {
-    // Force le redémarrage de l'animation après un court délai
-    // Cela résout les cas où l'animation ne démarre pas sur certains mobiles
     const ticker = tickerRef.current
     if (!ticker) return
 
     const forceRestart = () => {
       ticker.style.animation = 'none'
-      ticker.offsetHeight // force reflow
+      ticker.offsetHeight
       ticker.style.animation = null
     }
 
-    // Redémarrage après chargement complet et après un délai
     const timer = setTimeout(forceRestart, 100)
     window.addEventListener('load', forceRestart)
 
