@@ -1,144 +1,126 @@
 import { Link } from 'react-router-dom'
 import { Phone, Mail } from 'lucide-react'
-import logo from '../../assets/images/logo_marel.jpeg'
 import { FaFacebook } from 'react-icons/fa'
+import logo from '../../assets/images/logo_marel.jpeg'
 
 const STYLES = `
   .topbar-root {
-    background: #2D6A1F;
-    border-bottom: 3px solid #8DC31E;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
     position: fixed;
-    top: 0; left: 0; right: 0;
+    top: 38px; left: 0; right: 0;
     z-index: 1100;
   }
   .topbar-inner {
     max-width: 1280px;
     margin: 0 auto;
     padding: 10px 32px;
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 24px;
+    position: relative;
   }
+
+  /* ── Logo — sort du flux, dépasse en bas sur la navbar verte */
   .topbar-brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
     text-decoration: none;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 10;
+  }
+  .topbar-logo-wrap {
+    width: 100px; height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
   }
   .topbar-logo {
-    width: 58px; height: 58px;
+    width: 100px; height: 100px;
     object-fit: contain;
-    border-radius: 10px;
-    border: 3px solid #8DC31E;
-    background: #fff;
-    padding: 2px;
     display: block;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,.10));
   }
   .topbar-brand-name {
     font-family: 'Sora', sans-serif;
+    font-size: 26px;
     font-weight: 800;
-    font-size: 17px;
-    color: #fff;
-    letter-spacing: -0.3px;
-    line-height: 1.2;
+    color: #1a1a1a;
+    letter-spacing: -.3px;
+    line-height: 1;
     display: block;
   }
-  .topbar-brand-sub {
-    font-size: 11px;
-    color: rgba(255,255,255,0.62);
-    font-weight: 500;
-    display: block;
-    margin-top: 3px;
-  }
+
+  /* ── Contacts */
   .topbar-contacts {
     display: flex;
     align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-  .topbar-sep {
-    width: 1px; height: 44px;
-    background: rgba(255,255,255,0.18);
-    flex-shrink: 0;
+    gap: 36px;
   }
   .topbar-item {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 14px;
     text-decoration: none;
     transition: opacity .2s;
-    cursor: pointer;
   }
   .topbar-item:hover { opacity: .75; }
   .topbar-icon {
-    width: 38px; height: 38px;
+    width: 46px; height: 46px;
     border-radius: 50%;
-    background: rgba(141,195,30,.22);
+    border: 2px solid #8DC31E;
+    color: #8DC31E;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
   }
   .topbar-lbl {
-    color: rgba(255,255,255,.58);
-    font-size: 9px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: .09em;
-    line-height: 1; margin: 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1;
+    margin: 0 0 5px;
+    display: block;
   }
   .topbar-val {
-    color: #fff; font-size: 13px; font-weight: 700;
-    margin: 3px 0 0; line-height: 1;
-  }
-  .topbar-val2 {
-    color: rgba(255,255,255,.75); font-size: 11.5px; font-weight: 500;
-    margin: 2px 0 0; line-height: 1;
-  }
-  .topbar-fb {
-    color: #8DC31E; font-size: 13px; font-weight: 700;
-    margin: 3px 0 0; line-height: 1; text-decoration: underline;
+    font-size: 13px;
+    font-weight: 500;
+    color: #555;
+    line-height: 1.55;
+    margin: 0;
+    display: block;
   }
 
   /* Tablette */
-  @media (max-width: 960px) {
-    .topbar-inner { padding: 10px 20px; gap: 12px; }
-    .topbar-sep { display: none; }
-    .topbar-contacts { gap: 14px; }
+  @media (max-width: 1024px) {
+    .topbar-inner { padding: 10px 20px; gap: 16px; }
+    .topbar-contacts { gap: 20px; }
+    .topbar-logo, .topbar-logo-wrap { width: 82px; height: 82px; }
+    .topbar-brand-name { font-size: 22px; }
   }
 
-  /* Mobile landscape / petite tablette */
-  @media (max-width: 720px) {
-    .topbar-inner {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 10px 16px;
-    }
-    .topbar-contacts {
-      width: 100%;
-      gap: 12px;
-    }
-    .topbar-logo { width: 48px; height: 48px; }
-    .topbar-brand-name { font-size: 15px; }
-    .topbar-brand-sub { font-size: 10px; }
+  /* Mobile */
+  @media (max-width: 860px) {
+    .topbar-root { position: relative; top: auto; }
+    .topbar-inner { flex-direction: column; align-items: flex-start; padding: 12px 16px; height: auto; }
+    .topbar-contacts { flex-wrap: wrap; gap: 14px; }
+    .topbar-logo, .topbar-logo-wrap { width: 64px; height: 64px; }
+    .topbar-brand-name { font-size: 20px; }
   }
 
-  /* Mobile portrait */
   @media (max-width: 480px) {
-    .topbar-contacts {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .topbar-icon { width: 32px; height: 32px; }
-    .topbar-val { font-size: 11.5px; }
-    .topbar-val2 { font-size: 10.5px; }
-    .topbar-fb { font-size: 11.5px; }
-    .topbar-lbl { font-size: 8px; }
+    .topbar-contacts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .topbar-icon { width: 38px; height: 38px; }
+    .topbar-lbl { font-size: 11px; }
+    .topbar-val { font-size: 12px; }
   }
 
-  /* Très petit mobile */
   @media (max-width: 360px) {
     .topbar-contacts { grid-template-columns: 1fr; }
-    .topbar-logo { width: 42px; height: 42px; }
   }
 `
 
@@ -149,44 +131,42 @@ export default function TopBar() {
       <div className="topbar-root">
         <div className="topbar-inner">
 
-          {/* Logo */}
           <Link to="/" className="topbar-brand">
-            <img src={logo} alt="EPV MAREL" className="topbar-logo" />
-            <div>
-              <span className="topbar-brand-name">EPV MAREL</span>
-              <span className="topbar-brand-sub">École Maternelle &amp; Primaire</span>
+            <div className="topbar-logo-wrap">
+              <img src={logo} alt="EPV MAREL" className="topbar-logo" />
             </div>
+            <span className="topbar-brand-name">EPV MAREL</span>
           </Link>
 
-          {/* Contacts */}
           <div className="topbar-contacts">
 
             <a href="tel:+22522503581" className="topbar-item">
-              <div className="topbar-icon"><Phone size={15} style={{ color: '#8DC31E' }} /></div>
+              <div className="topbar-icon"><Phone size={19} /></div>
               <div>
-                <p className="topbar-lbl">Nos contacts</p>
-                <p className="topbar-val">+225 22 50 35 81</p>
-                <p className="topbar-val2">+225 05 61 56 10</p>
+                <span className="topbar-lbl">Nos contacts</span>
+                <span className="topbar-val">+225 22 50 35 81</span>
+                <span className="topbar-val">+225 05 61 56 10</span>
               </div>
             </a>
-
-            <div className="topbar-sep" />
 
             <a href="mailto:contact@etsmarel.ci" className="topbar-item">
-              <div className="topbar-icon"><Mail size={15} style={{ color: '#8DC31E' }} /></div>
+              <div className="topbar-icon"><Mail size={19} /></div>
               <div>
-                <p className="topbar-lbl">Notre Email</p>
-                <p className="topbar-val">contact@etsmarel.ci</p>
+                <span className="topbar-lbl">Notre Email</span>
+                <span className="topbar-val">contact@etsmarel.ci</span>
               </div>
             </a>
 
-            <div className="topbar-sep" />
-
-            <a href="https://www.facebook.com/gsmarel" target="_blank" rel="noopener noreferrer" className="topbar-item">
-              <div className="topbar-icon"><FaFacebook size={15} style={{ color: '#8DC31E' }} /></div>
+            <a
+              href="https://www.facebook.com/gsmarel"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="topbar-item"
+            >
+              <div className="topbar-icon"><FaFacebook size={19} /></div>
               <div>
-                <p className="topbar-lbl">Notre page Méta</p>
-                <p className="topbar-fb">Visitez la page</p>
+                <span className="topbar-lbl">Notre page Facebook</span>
+                <span className="topbar-val">facebook.com/gsmarel</span>
               </div>
             </a>
 

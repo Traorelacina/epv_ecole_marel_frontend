@@ -154,39 +154,7 @@ const GLOBAL_STYLES = `
 
 const SLIDES = [imgSlide1, imgSlide2, imgSlide3]
 
-/* ── FLASH INFO BAR ── */
-function FlashInfoBar() {
-  return (
-    <div style={{
-      backgroundColor: '#D4191A',
-      overflow: 'hidden',
-      borderBottom: '2px solid rgba(255,255,255,0.15)',
-      position: 'relative',
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', height: '36px' }}>
-        <div style={{
-          backgroundColor: '#a01010', padding: '0 16px', height: '100%',
-          display: 'flex', alignItems: 'center', gap: '6px',
-          flexShrink: 0, zIndex: 2,
-        }}>
-          <Zap size={12} style={{ color: '#FFD700' }} />
-          <span style={{ color: '#FFD700', fontWeight: 800, fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
-            Flash Info
-          </span>
-        </div>
-        <div style={{ overflow: 'hidden', flex: 1 }}>
-          <p style={{
-            color: '#ffffff', fontSize: '13px', fontWeight: 500, whiteSpace: 'nowrap',
-            animation: 'ticker 30s linear infinite',
-            display: 'inline-block', paddingLeft: '100%',
-          }}>
-            🎉 Les inscriptions et réinscriptions pour l'année académique 2026-2027 sont ouvertes ! Contactez-nous au +225 22 50 35 81 ou venez nous rendre visite aux Deux Plateaux, Cocody — Abidjan.
-          </p>
-        </div>
-      </div>
-    </div>
-  )
-}
+
 
 /* ── HERO SECTION — Slides grands et clairs ── */
 function HeroSection() {
@@ -216,7 +184,7 @@ function HeroSection() {
     <>
       <style>{GLOBAL_STYLES}</style>
      
-      <FlashInfoBar />
+     
 
       <section style={{
         position: 'relative',
